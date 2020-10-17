@@ -6,8 +6,7 @@
   "scripts": {
     "test": "mocha ./userserver/test",
     "start": "node userserver/app/main.js",
-    "cover": "istanbul cover _mocha ./userserver/test", 
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "nyc --reporter=lcovonly _mocha ./userserver/test -- --recursive -- --exit -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -33,6 +32,7 @@
     "docker-compose": "^0.23.5",
     "istanbul": "^0.4.5",
     "mocha": "^8.1.3",
-    "mocha-lcov-reporter": "^1.3.0"
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^15.1.0"
   }
 }
