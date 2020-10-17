@@ -10,7 +10,7 @@ services:
 #------------------------------------testing------------------------------------#
 before_script:
   - docker-compose build
-  - docker-compose up -d
+  - docker-compose run -d --name userserver web
 
 scripts:
   - docker exec userserver npm test --cov=userserver
