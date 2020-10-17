@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: bookbnb-userserver_web
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    volumes:
+      - ./:/usr/src/app
+
+    ports:
+      - 3000:8080 # host=3000 --> docker=8080
+
+    depends_on:
+      - db # first execute database
+
+    environment:
+      - TESTING=0
+      - ENVIRONMENT=dev
+      - DATABASE_URL=postgres://user:password@db/postserver_db_dev
+
+  db:
+    container_name: bookbnb-userserver_db
+
+    image: postgres:12.1-alpine
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postserver_db_dev
+
+volumes:
+  postgres_data:
