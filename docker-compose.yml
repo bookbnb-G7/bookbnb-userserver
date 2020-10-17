@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-
+    
     volumes:
       - ./:/usr/src/app
 
@@ -21,6 +21,7 @@ services:
       - TESTING=0
       - ENVIRONMENT=dev
       - DATABASE_URL=postgres://user:password@db/postserver_db_dev
+
 
   db:
     container_name: bookbnb-userserver_db

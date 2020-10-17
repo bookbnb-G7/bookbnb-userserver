@@ -1,7 +1,7 @@
 language: node_js
 
-python:
-  - 10
+node_js:
+  - "10"
 
 services:
   - docker
@@ -9,15 +9,13 @@ services:
 
 #------------------------------------testing------------------------------------#
 before_script:
-  - npm install
   - docker-compose build
+  - docker-compose up -d
 
 scripts:
-  - docker-compose run -d --name userserver web
   - docker exec userserver npm test --cov=userserver
   - docker exec -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
                 -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" userserver coveralls
-
 #--------------------------------------------------------------------------------#
 
 

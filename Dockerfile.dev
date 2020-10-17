@@ -22,4 +22,4 @@ COPY . /usr/src/app
 EXPOSE 8080
 
 # docker entrypoint for heroku
-CMD ["npm", "start"]
+CMD ["sh", "./docker-entrypoint.dev.sh"]

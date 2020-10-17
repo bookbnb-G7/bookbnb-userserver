@@ -13,9 +13,13 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+app.get('/', (req, res) => {
+	res.json({message:'userserver'})
+})
+
 app.use('/users', require('./api/routes/user.router'))
 
-database.authenticate().then(() => {
+database.sync().then(() => {
   app.listen(port, () => {
     console.log(`Listening on port ${port}`)
   })

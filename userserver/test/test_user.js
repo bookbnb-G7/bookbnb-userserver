@@ -3,7 +3,7 @@ let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 
 chai.use(chaiHttp);
-const url = 'http://localhost:3000';
+const url = 'http://localhost:8080';
 
 describe('Insert a user: ',()=>{
 	it('should insert a user', (done) => {
