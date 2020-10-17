@@ -9,14 +9,14 @@ services:
 
 #------------------------------------testing------------------------------------#
 before_script:
-  - pip install docker-compose
+  - npm install
   - docker-compose build
 
 scripts:
-  - docker-compose run -d --name userver web
-  - docker exec userver npm test --cov=appserver
+  - docker-compose run -d --name userserver web
+  - docker exec userserver npm test --cov=userserver
   - docker exec -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
-                -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" userver coveralls
+                -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" userserver coveralls
 
 #--------------------------------------------------------------------------------#
 
