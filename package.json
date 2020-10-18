@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha ./userserver/test",
     "start": "node userserver/app/main.js",
-    "coveralls": "nyc --reporter=lcovonly _mocha ./userserver/test -- --recursive -- --exit -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "coveralls": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./userserver/test/* && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
