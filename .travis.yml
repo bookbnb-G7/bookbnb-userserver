@@ -13,7 +13,6 @@ before_script:
   - docker-compose up -d
 
 scripts:
-<<<<<<< HEAD
   - docker exec bookbnb-userserver_web npm test 
 
 after_success:
