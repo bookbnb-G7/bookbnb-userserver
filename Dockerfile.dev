@@ -18,8 +18,5 @@ RUN npm install
 # copy app
 COPY . /usr/src/app
 
-# expose port
-EXPOSE 8080
-
 # docker entrypoint for heroku
 CMD ["sh", "./docker-entrypoint.dev.sh"]
