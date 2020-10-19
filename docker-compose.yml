@@ -10,6 +10,7 @@ services:
       
     volumes:
       - ./:/usr/src/app
+      - /usr/src/app/node_modules
 
     ports:
       - 3000:8080 # host=3000 --> docker=8080
