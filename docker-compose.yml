@@ -10,7 +10,7 @@ services:
       
     volumes:
       - ./:/usr/src/app
-      - /usr/src/app/node_modules
+      - node_modules:/usr/src/app/node_modules
 
     ports:
       - 3000:8080 # host=3000 --> docker=8080
@@ -38,4 +38,5 @@ services:
       - POSTGRES_DB=postserver_db_dev
 
 volumes:
+  node_modules:
   postgres_data:
