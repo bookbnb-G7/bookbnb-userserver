@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 
 require('dotenv').config()
 
-const { database } = require('./db')
+const database = require('./db')
 
 const port = process.env.PORT || 8080
 
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.use('/users', require('./api/routes/user.router'))
 
 database.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-  })
+ 	app.listen(port, () => {
+    	console.log(`Listening on port ${port}`)
+  	})
 })
