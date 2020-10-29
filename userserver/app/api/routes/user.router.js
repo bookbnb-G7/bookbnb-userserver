@@ -1,14 +1,31 @@
-const user = require('../crud/user.crud')
+const user_controller = require('../crud/user.crud')
 
 const express = require('express')
 const router = express.Router()
 
-router.get('/', user.findAll)
+const User = require('../../model/user')
+const Name = require('../../model/name')
+const Email = require('../../model/email')
+const PhoneNumber = require('../../model/phonenumber')
 
-router.post('/', user.create)
+//router.get('/', user.findAll)
 
-router.get('/:id', user.findOne)
+router.post('/', (req, res, next) => {
+  try {
+    let name = new Name(req.body.firstname, req.body.lastname);
+    let email = new Email(req.body.email);
+    let phonenumber = new PhoneNumber(req.body.country, req.body.phonenumber);
+    let user = new User(name, email, phonenumber, req.body.birthdate);
+  
+    user_controller.create(user)
+  } catch (error) {
+    res.status(500)
+    res.json({ success: false, error: error.message })
+  }
+})
 
-router.delete('/:id', user.remove)
+//router.get('/:id', user.findOne)
+
+//router.delete('/:id', user.remove)
 
 module.exports = router

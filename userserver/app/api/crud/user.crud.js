@@ -1,25 +1,24 @@
 const User = require('../models/user.model')
 
-exports.create = async (req, res, next) => {
-	try {
-    	const username = req.body.username
-    	const firstname = req.body.firstname
-    	const lastname = req.body.lastname
+exports.create = async (user) => {
+  email =  user.email;
+  country = user.country;
+  phonenumber = user.phonenumber;
+  birthdate = user.birthdate;
+  firstname = user.firstname;
+  lastname = user.lastname;
 
-    const { id } = await User.create({ 
-      	username,
-      	firstname,
-      	lastname
-    })
-
-    res.json({ success: true, id })
-  	} catch (error) {
-    	res.status(500)
-   		res.json({ success: false, error: error.message })
-  	}
+  const { id } = await User.create({ 
+    email,
+    country,
+    phonenumber,
+    birthdate,
+    firstname,
+    lastname
+  })
 }
 
-
+/*
 exports.remove = async (req, res, next) => {
 	try {
         const { id } = req.params
@@ -44,3 +43,4 @@ exports.findOne = async (req, res, next) => {
 exports.findAll = async (req, res, next) => {
     res.json(await User.findAll())
 }
+*/
