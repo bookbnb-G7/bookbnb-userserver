@@ -1,14 +1,17 @@
 class PhoneNumber {
   constructor(country, number) {
-    this.country = country;
-    this.number = number;
+    this._country = country;
+    this._number = number;
   }
 
   get country() {
-    return this.country;
+    return this._country;
   }
 
   get number() {
-    return this.number;
+    return this._number;
   }
+
 }
+
+module.exports = PhoneNumber;

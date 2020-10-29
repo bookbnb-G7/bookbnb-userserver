@@ -1,12 +1,12 @@
 const User = require('../models/user.model')
 
 exports.create = async (user) => {
-  email =  user.email;
-  country = user.country;
-  phonenumber = user.phonenumber;
-  birthdate = user.birthdate;
-  firstname = user.firstname;
-  lastname = user.lastname;
+  const email =  user.email;
+  const country = user.country;
+  const phonenumber = user.phonenumber;
+  const birthdate = user.birthdate;
+  const firstname = user.firstname;
+  const lastname = user.lastname;
 
   const { id } = await User.create({ 
     email,
@@ -16,6 +16,8 @@ exports.create = async (user) => {
     firstname,
     lastname
   })
+  console.log(id);
+  return id;
 }
 
 /*

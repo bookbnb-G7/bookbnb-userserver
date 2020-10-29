@@ -10,14 +10,17 @@ const PhoneNumber = require('../../model/phonenumber')
 
 //router.get('/', user.findAll)
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     let name = new Name(req.body.firstname, req.body.lastname);
     let email = new Email(req.body.email);
     let phonenumber = new PhoneNumber(req.body.country, req.body.phonenumber);
     let user = new User(name, email, phonenumber, req.body.birthdate);
-  
-    user_controller.create(user)
+
+    let id = await user_controller.create(user)
+
+    res.status(201)
+    res.json({ success: true, id });
   } catch (error) {
     res.status(500)
     res.json({ success: false, error: error.message })
