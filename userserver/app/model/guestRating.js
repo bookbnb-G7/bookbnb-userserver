@@ -2,15 +2,15 @@ const database = require('../db')
 const Sequelize = require('sequelize')
 const User = require('./user')
 
-const HostReview = database.define('host_reviews', {
+const GuestRating = database.define('guest_ratings', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement:true },
-  review: { type: Sequelize.STRING(50), allowNull: false },
+  rating: { type: Sequelize.INTEGER, allowNull: false },
   reviewer: { type: Sequelize.STRING(50), allowNull: false },
   reviewer_id: { type: Sequelize.STRING(50), allowNull: false },
 })
 
 // defines a foreign key 'userId'
-HostReview.belongsTo(User);
+GuestRating.belongsTo(User);
 
-module.exports = HostReview;
+module.exports = GuestRating;
 

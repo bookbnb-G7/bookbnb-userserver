@@ -1,14 +1,14 @@
-const HostRating = require('../../model/hostRating')
+const GuestRating = require('../../model/guestRating')
 
 exports.createRating = (req, res) => {
   rating_params = {...req.params, ...req.body}
-  HostRating.create(rating_params).then((newRating) => {
+  GuestRating.create(rating_params).then((newRating) => {
     res.status(201).json(newRating);
   })
 }
 
 exports.getAllRatings = (req, res) => {
-  HostRating.findAll({where: {userId: req.params.userId}}).then((ratings) => {
+  GuestRating.findAll({where: {userId: req.params.userId}}).then((ratings) => {
     res.status(200).json(ratings)
   })
 }
@@ -16,7 +16,7 @@ exports.getAllRatings = (req, res) => {
 exports.getRating = (req, res) => {
   // here should be some check that the rating 
   // belongs to the specified userId
-  HostRating.findByPk(req.params.ratingId).then((rating) => {
+  GuestRating.findByPk(req.params.ratingId).then((rating) => {
     res.status(200).json(rating)
   })
 }
