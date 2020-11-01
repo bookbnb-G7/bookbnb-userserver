@@ -13,7 +13,7 @@ services:
       - node_modules:/usr/src/app/node_modules
 
     ports:
-      - 3000:8080 # host=3000 --> docker=8080
+      - 4000:8080 # host=4000 --> docker=8080
 
     depends_on:
       - db # first execute database

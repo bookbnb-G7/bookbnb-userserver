@@ -1,107 +1,22 @@
-const user_controller = require('../crud/user.crud');
+const userController = require('../controllers/user.controller');
+
+const hostReviewController = require('../controllers/hostReview.controller');
+const hostRatingController = require('../controllers/hostRating.controller');
 
 const express = require('express');
 const router = express.Router();
 
-const input = require('../../input/input');
-const output = require('../../output/output');
+router.post('/', userController.createUser);
 
-router.post('/', async (req, res, next) => {
-  try {
-    const user = input.create(req.body);
-    const id = await user_controller.create(user)
-    // Return user Jsonized
-    output.userCreated(res, id, user);
+router.post('/:userId/host_reviews', hostReviewController.createReview);
+router.post('/:userId/host_ratings', hostRatingController.createRating);
 
-  } catch (error) {
-    output.error(res, 500, error.message);
-  }
-});
+router.get('/:userId', userController.getUser);
 
-router.get('/id/:id', async (req, res, next) => {
-	try {
-    const id = input.readId(req);
-    const user = await user_controller.findOne(id);
-    if (user != null)
-      output.one_user(res, user);
-    else
-      output.error(res, 404, 'User not found.')
+router.get('/:userId/host_reviews', hostReviewController.getAllReviews);
+router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
 
-  } catch (error) { 
-    output.error(res, 404, error.message);
-  }
-});
-
-router.get('/id/:id/self', async (req, res, next) => {
-	try {
-    const id = input.readId(req);
-    const user = await user_controller.findOnePrivileged(id);
-    if (user != null)
-      output.one_user(res, user);
-    else
-      output.error(res, 404, 'User not found.')
-
-  } catch (error) { 
-    output.error(res, 404, error.message);
-  }
-});
-
-router.put('/id/:id', async (req, res, next) => {
-	try {
-    let id = input.readId(req);
-    const user = input.create(req.body);
-
-    id = await user_controller.updateOrCreate(id, user);
-    output.userCreated(res, id, user);
-
-  } catch (error) { 
-    console.log(error);
-    output.error(res, 500, error.message);
-  }
-});
-
-router.delete('/id/:id', async (req, res, next) => {
-  try {
-    const id = input.readId(req);
-    if (await user_controller.remove(id))
-      output.deleted(res, id);
-    else
-      output.error(res, 404, 'User not found.');
-  } catch (error) {
-    output.error(res, 404, error.message);
-  }
-})
-
-router.patch('/id/:id', async (req, res, next) => {
-  try {
-    const id = input.readId(req);
-    const user = await user_controller.patch(id, req.body);
-    if (user)
-      output.userPatched(res, id, user);
-    else
-      output.error(res, 404, 'User not found.');
-  } catch (error) {
-    console.log(error);
-    output.error(res, 404, error.message);
-  }
-})
-
-/*
-router.delete('/armaggedon', async (req, res, next) => {
-  try {
-    const deleted = await user_controller.removeAll();
-    output.removeAll(res, deleted);
-  } catch (error) {
-    output.error(res, 500, error.message);
-  }
-
-})
-*/
-
-//router.get('/', user.findAll)
-
-//router.get('/:id', user.findOne)
-
-//router.delete('/:id', user.remove)
+router.get('/:userId/host_reviews/:reviewId', hostReviewController.getReview);
+router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
 
 module.exports = router;
