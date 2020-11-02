@@ -45,7 +45,6 @@ describe('Post a new Host review', () => {
 			.post('/users/1/host_reviews')
 			.send({ review: 'Muy buen host', reviewer: 'Facu T', reviewer_id: '2' })
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(201);
 				expect(res.body).to.have.property('review');
 				expect(res.body).to.have.property('reviewer');
@@ -73,7 +72,6 @@ describe('Post a new Host rating', () => {
 			.post('/users/1/host_ratings')
 			.send({ rating: '5', reviewer: 'Facu T', reviewer_id: '2' })
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(201);
 				expect(res.body).to.have.property('rating');
 				expect(res.body).to.have.property('reviewer');
@@ -113,7 +111,6 @@ describe('Post a new Guest review', () => {
 			.post('/users/1/guest_reviews')
 			.send({ review: 'Muy buen guest', reviewer: 'Facu T', reviewer_id: '2' })
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(201);
 				expect(res.body).to.have.property('review');
 				expect(res.body).to.have.property('reviewer');
@@ -141,7 +138,6 @@ describe('Post a new Guest rating', () => {
 			.post('/users/1/guest_ratings')
 			.send({ rating: '5', reviewer: 'Facu T', reviewer_id: '2' })
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(201);
 				expect(res.body).to.have.property('rating');
 				expect(res.body).to.have.property('reviewer');
@@ -212,7 +208,6 @@ describe('Get all the host reviews of an user', () => {
 			.get('/users/1/host_reviews')
 			.send()
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(200);
 				expect(res.body).to.be.an('array');
 				done();
@@ -226,7 +221,6 @@ describe('Get all the host reviews of an invalid user', () => {
 			.get('/users/-1/host_reviews')
 			.send()
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(404);
 				done();
 			})
@@ -239,7 +233,6 @@ describe('Get all the host ratings of an user', () => {
 			.get('/users/1/host_ratings')
 			.send()
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(200);
 				expect(res.body).to.be.an('array');
 				done();
@@ -253,7 +246,6 @@ describe('Get all the host ratings of an invalid user', () => {
 			.get('/users/-1/host_ratings')
 			.send()
 			.end((err, res) => {
-				console.log(res.body);
 				expect(res).to.have.status(404);
 				done();
 			})
