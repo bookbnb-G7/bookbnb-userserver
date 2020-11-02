@@ -18,10 +18,8 @@ if (ENVIRONMENT == 'production') {
 	database = new Sequelize(DATABASE_URL ,{
 		dialect: 'sqlite',
 		operatorsAliases: Sequelize.Op,
-	  	define: {timestamp: false},
-		storage: './database.sqlite3'
+		define: {timestamp: false}
   	})
 }
-
 
 module.exports = database 
