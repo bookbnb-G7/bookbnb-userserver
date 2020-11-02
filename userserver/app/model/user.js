@@ -13,3 +13,10 @@ const User = database.define('users', {
 
 module.exports = User;
 
+/*
+  email: { type: Sequelize.STRING(50), 
+           unique: { name: 'users_email', msg: 'A user with this email already exists.'}, 
+           allowNull: false, 
+           validate: { notEmpty: true, isEmail: true,}
+          },
+*/
