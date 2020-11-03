@@ -3,9 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
-require('dotenv').config();
-
 const database = require('./db');
 
 const port = process.env.PORT || 8080;
@@ -29,7 +26,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-	res.json({message:'userserver'})
+    res.json({message:'userserver'})
 })
 
 app.use('/users', require('./api/routes/user.router'))
@@ -39,3 +36,4 @@ database.sync().then(() => {
     console.log(`Listening on port ${port}`)
   })
 })
+
