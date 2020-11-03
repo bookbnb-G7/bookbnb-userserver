@@ -23,8 +23,6 @@ after_success:
     -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" -e COVERALLS_GIT_BRANCH="$COVERALLS_GIT_BRANCH" 
     -e COVERALLS_SERVICE_NAME="$COVERALLS_SERVICE_NAME" bookbnb-userserver_web npm run coveralls
   
-  on:
-    branch: master  
 #--------------------------------------------------------------------------------#
 
 
