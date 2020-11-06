@@ -1,11 +1,46 @@
 const database = require('../db')
 const Sequelize = require('sequelize')
 
+/**
+ * @swagger
+ * definitions:
+ *  User:
+ *    type: object
+ *    properties:
+ *      firstname:
+ *        type: string
+ *        required: true
+ *        example: Elmer
+ *      lastname:
+ *        type: string
+ *        required: true
+ *        example: Figueroa Arce
+ *      email:
+ *        type: string
+ *        required: true
+ *        format: email
+ *        description: "Email of the user"
+ *        example: chayanne@email.com
+ *      country:
+ *        type: string
+ *        required: true
+ *        example: Puerto Rico
+ *      phonenumber:
+ *        type: string
+ *        required: true
+ *        example: 1 787 111 1111
+ *      birthdate:
+ *        type: string
+ *        format: date
+ *        required: true
+ *        example: "1968-06-28"
+ */
+
 const User = database.define('users', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement:true },
   firstname: { type: Sequelize.STRING(30), allowNull: false },
   lastname: { type: Sequelize.STRING(30), allowNull: false },
-  email: { type: Sequelize.STRING(50), allowNull: false },
+  email: { type: Sequelize.STRING(50), allowNull: false, validate: { notEmpty: true, isEmail: true } },
   country: { type: Sequelize.STRING(20), allowNull: false },
   phonenumber: { type: Sequelize.STRING(20), allowNull: false },
   birthdate: { type: Sequelize.DATEONLY, allowNull: false }
