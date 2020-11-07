@@ -13,27 +13,33 @@ const swaggerOptions = {
   swaggerDefinition: {
     info: { 
       title: "Userserver API",
-      descrption: "Userserver API information",
-    }
+      description: "Userserver API information",
+    },
+    servers: ["http://localhost:8080"]
   },
-  apis: ['./api/routes/*.js']
-}
+  apis: ["./userserver/app/api/routes/*.js", "./userserver/app/model/*.js"]
+};
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use(cors())
-app.use(bodyParser.json())
+app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.json({message:'userserver'})
+    res.json({message:'userserver'});
 })
 
-app.use('/users', require('./api/routes/user.router'))
+app.use('/users', require('./api/routes/users.router'));
+app.use('/users', require('./api/routes/hostReviews.router'));
+app.use('/users', require('./api/routes/hostRatings.router'));
+app.use('/users', require('./api/routes/guestReviews.router'));
+app.use('/users', require('./api/routes/guestRatings.router'));
 
 database.sync().then(() => {
  	app.listen(port, () => {
     console.log(`Listening on port ${port}`)
   })
-})
+});
 

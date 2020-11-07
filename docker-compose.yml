@@ -19,8 +19,8 @@ services:
       - db # first execute database
 
     environment:
-      - ENVIRONMENT=development
-      - DATABASE_URL=sqlite:///./app.db
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      DATABASE_URL: sqlite:///./app.db
 
 
   db:
