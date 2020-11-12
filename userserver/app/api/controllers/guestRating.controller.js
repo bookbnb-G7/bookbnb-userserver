@@ -15,8 +15,10 @@ exports.createRating = (req, res) => {
 }
 
 exports.getAllRatings = (req, res) => {
-  GuestRating.findAll({ where: {userId: [req.params.userId]}, attributes: [...ratingKeys, "id"] }).then((ratings) => {
-    res.status(200).json(ratings);
+  let query = aux.filterObjectKeys(req.query, [...ratingKeys, "id"]);
+  query["userId"] = req.params.userId;
+  GuestRating.findAll({ where: query, attributes: [...ratingKeys, "id"] }).then((ratings) => {
+    res.status(200).json({ userId: req.params.userId, ratings: ratings });
   }).catch((error) => {
     res.status(500).json({ success: "false", error: error.message });
   })
@@ -40,7 +42,7 @@ exports.updateRating = (req, res) => {
       rating.update(toUpdate).then((ratingUpdated) => {
         res.status(200).json(aux.filterObjectKeys(ratingUpdated.toJSON(), [...ratingKeys, "id"]));
       }).catch((error) => {
-        res.status(500).json( { success: "false", error});
+        res.status(500).json( { success: "false", error: error.message});
       });
     } else
       res.status(404).json({ success:"false", error:"Not found" })

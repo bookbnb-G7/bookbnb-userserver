@@ -26,11 +26,11 @@ const router = express.Router();
  *      schema:
  *        $ref: '#/definitions/GuestRating'
  *    responses:
- *      201:
+ *      "201":
  *        description: Guest rating was created successfully
  *        schema:
  *          $ref: "#/definitions/GuestRating"
- *      500:
+ *      "500":
  *        description: The guest rating could not be created
  */
 router.post('/:userId/guest_ratings', guestRatingController.createRating);

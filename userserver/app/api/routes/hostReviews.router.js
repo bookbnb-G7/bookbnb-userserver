@@ -26,11 +26,11 @@ const router = express.Router();
  *      schema:
  *        $ref: '#/definitions/HostReview'
  *    responses:
- *      201:
+ *      "201":
  *        description: Host review was created successfully
  *        schema:
  *          $ref: "#/definitions/HostRating"
- *      500:
+ *      "500":
  *        description: The host review could not be created
  */
 router.post('/:userId/host_reviews', hostReviewController.createReview);

@@ -15,8 +15,10 @@ exports.createReview = (req, res) => {
 }
 
 exports.getAllReviews = (req, res) => {
-  HostReview.findAll({ where: {userId: [req.params.userId]}, attributes: [...reviewKeys, "id"] }).then((reviews) => {
-    res.status(200).json(reviews);
+  let query = aux.filterObjectKeys(req.query, [...reviewKeys, "id"]);
+  query["userId"] = req.params.userId;
+  HostReview.findAll({ where: query, attributes: [...reviewKeys, "id"] }).then((reviews) => {
+    res.status(200).json({ userId: req.params.userId, reviews: reviews });
   }).catch((error) => {
     res.status(500).json({ success: "false", error: error.message });
   })
@@ -40,7 +42,7 @@ exports.updateReview = (req, res) => {
       review.update(toUpdate).then((reviewUpdated) => {
         res.status(200).json(aux.filterObjectKeys(reviewUpdated.toJSON(), [...reviewKeys, "id"]));
       }).catch((error) => {
-        res.status(500).json( { success: "false", error});
+        res.status(500).json( { success: "false", error: error.message});
       });
     } else
       res.status(404).json({ success:"false", error:"Not found" })
