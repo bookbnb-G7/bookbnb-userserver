@@ -54,10 +54,18 @@ router.post('/:userId/guest_reviews', guestReviewController.createReview);
  *    responses:
  *      "200":
  *        description: Successful operation
- *        schema:
- *          type: "array"
- *          items:
- *            $ref: "#/definitions/GuestReview"
+*        schema:
+ *          type: object
+ *          properties:
+ *            userId:
+ *              type: integer
+ *              description: The id of the user reviewed
+ *              example: 1
+ *            reviews:
+ *              type: array
+ *              description: The list of reviews
+ *              items:
+ *                $ref: "#/definitions/GuestReview"
  *      "500":
  *        description: An error ocurred
  */
