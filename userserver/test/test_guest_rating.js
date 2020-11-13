@@ -130,6 +130,8 @@ describe('Get all the guest ratings of an user', () => {
                 expect(res).to.have.status(200);
                 expect(res.body).to.have.property('userId');
 								expect(res.body.userId).to.equal(userID.toString());
+								expect(res.body).to.have.property('amount');
+								expect(res.body.amount).to.not.equal(0);
 								expect(res.body).to.have.property('ratings');
                 expect(res.body.ratings).to.be.an('array').that.is.not.empty;
                 //Delete the rating

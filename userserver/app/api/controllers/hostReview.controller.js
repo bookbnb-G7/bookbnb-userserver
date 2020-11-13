@@ -18,7 +18,7 @@ exports.getAllReviews = (req, res) => {
   let query = aux.filterObjectKeys(req.query, [...reviewKeys, "id"]);
   query["userId"] = req.params.userId;
   HostReview.findAll({ where: query, attributes: [...reviewKeys, "id"] }).then((reviews) => {
-    res.status(200).json({ userId: req.params.userId, reviews: reviews });
+    res.status(200).json({ userId: req.params.userId, amount: reviews.length, reviews: reviews });
   }).catch((error) => {
     res.status(500).json({ success: "false", error: error.message });
   })

@@ -61,6 +61,10 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *              type: integer
  *              description: The id of the user rated
  *              example: 1
+ *            amount:
+ *              type: integer
+ *              description: The amount of users returned
+ *              example: 1
  *            ratings:
  *              type: array
  *              description: The list of ratings

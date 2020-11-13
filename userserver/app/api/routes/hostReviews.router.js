@@ -61,6 +61,10 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
  *              type: integer
  *              description: The id of the user reviewed
  *              example: 1
+ *            amount:
+ *              type: integer
+ *              description: The amount of users returned
+ *              example: 1
  *            reviews:
  *              type: array
  *              description: The list of reviews

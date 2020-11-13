@@ -18,7 +18,7 @@ exports.getAllRatings = (req, res) => {
   let query = aux.filterObjectKeys(req.query, [...ratingKeys, "id"]);
   query["userId"] = req.params.userId;
   GuestRating.findAll({ where: query, attributes: [...ratingKeys, "id"] }).then((ratings) => {
-    res.status(200).json({ userId: req.params.userId, ratings: ratings });
+    res.status(200).json({ userId: req.params.userId, amount: ratings.length, ratings: ratings });
   }).catch((error) => {
     res.status(500).json({ success: "false", error: error.message });
   })
