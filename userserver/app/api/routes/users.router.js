@@ -21,14 +21,41 @@ const router = express.Router();
  *      schema:
  *        $ref: '#/definitions/User'
  *    responses:
- *      201:
+ *      "201":
  *        description: User was created successfully
  *        schema:
  *          $ref: "#/definitions/User"
- *      500:
+ *      "500":
  *        description: The user could not be created
  */
 router.post('/', userController.createUser);
+
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    tags:
+ *    - Users
+ *    summary: Get a list of all the Users
+ *    produces:
+ *    - "application/json"
+ *    responses:
+ *      "200":
+ *        description: A list of users
+ *        schema:
+ *          type: object
+ *          properties:
+ *            amount:
+ *              type: integer
+ *              description: The amount of users returned
+ *              example: 1
+ *            users:
+ *              type: array
+ *              description: The list of users
+ *              items:
+ *                $ref: "#/definitions/User"
+ */
+router.get('/', userController.getAllUsers);
 
 /**
  * @swagger

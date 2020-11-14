@@ -100,7 +100,12 @@ describe('Get all the guest reviews of an user', () => {
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
-                expect(res.body).to.be.an('array').that.is.not.empty;
+                expect(res.body).to.have.property('userId');
+								expect(res.body.userId).to.equal(userID.toString());
+								expect(res.body).to.have.property('amount');
+								expect(res.body.amount).to.not.equal(0);
+								expect(res.body).to.have.property('reviews');
+                expect(res.body.reviews).to.be.an('array').that.is.not.empty;
                 //Delete the review
                 chai.request(url)
                   .delete('/users/' + userID + '/guest_reviews/' + reviewID)

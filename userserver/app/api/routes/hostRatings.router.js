@@ -26,11 +26,11 @@ const router = express.Router();
  *      schema:
  *        $ref: '#/definitions/HostRating'
  *    responses:
- *      201:
+ *      "201":
  *        description: Host rating was created successfully
  *        schema:
  *          $ref: "#/definitions/HostRating"
- *      500:
+ *      "500":
  *        description: The host rating could not be created
  */
 router.post('/:userId/host_ratings', hostRatingController.createRating);
@@ -54,10 +54,22 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *    responses:
  *      "200":
  *        description: Successful operation
- *        schema:
- *          type: "array"
- *          items:
- *            $ref: "#/definitions/HostRating"
+*        schema:
+ *          type: object
+ *          properties:
+ *            userId:
+ *              type: integer
+ *              description: The id of the user rated
+ *              example: 1
+ *            amount:
+ *              type: integer
+ *              description: The amount of users returned
+ *              example: 1
+ *            ratings:
+ *              type: array
+ *              description: The list of ratings
+ *              items:
+ *                $ref: "#/definitions/HostRating"
  *      "500":
  *        description: An error ocurred
  */

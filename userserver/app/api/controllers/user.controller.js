@@ -11,7 +11,7 @@ exports.createUser = (req, res) => {
     //also newUser needs to be converted to JSON to be able to be filtered.
     res.status(201).json(aux.filterObjectKeys(newUser.toJSON(), [...userKeys, "id"]));
   }).catch((error) => {
-    res.status(500).json({ success: "false", error: [error.message] });
+    res.status(500).json({ success: "false", error: error.message });
   })
 }
 
@@ -22,7 +22,16 @@ exports.getUser = (req, res) => {
     else
       res.status(404).json({ success:"false", error:"Not found" })
   }).catch((error) => {
-    res.status(500).json({ success: "false", error: [error.message] });
+    res.status(500).json({ success: "false", error: error.message });
+  })
+}
+
+exports.getAllUsers = (req, res) => {
+  let query = aux.filterObjectKeys(req.query, [...userKeys, "id"]);
+  User.findAll({ where: query, attributes: [...userKeys, "id"] }).then((users) => {
+    res.status(200).json({ amount: users.length, users: users });
+  }).catch((error) => {
+    res.status(500).json({ success: "false", error: error.message });
   })
 }
 
@@ -36,9 +45,9 @@ exports.updateUser = (req, res) => {
         res.status(500).json( { success: "false", error});
       });
     } else
-      res.status(404).json({ success:"false", error:"Not found" });
+      res.status(404).json({ success:"false", error: "Not found" });
   }).catch((error) => {
-    res.status(500).json( { success: "false", error});
+    res.status(500).json({ success: "false", error: error.message });
   });
 }
 
@@ -48,8 +57,8 @@ exports.deleteUser = (req, res) => {
       if (result)
         res.status(200).json(result);
       else
-        res.status(404).json({ success:"false", error:"Not found" })
+        res.status(404).json({ success: "false", error: "Not found" })
     }).catch((error) => {
-      res.status(500).json({ success: "false", error });
+      res.status(500).json({ success: "false", error: error.message });
     })
 }

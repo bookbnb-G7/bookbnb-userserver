@@ -27,7 +27,15 @@ describe('Post a new User',() => {
 				expect(res.body).to.have.property('phonenumber');
 				expect(res.body).to.have.property('birthdate');
 				expect(res.body).to.have.property('id');
- 				done();
+				//Delete the created user
+				let userID = res.body.id;
+				chai.request(url)
+					.delete('/users/' + userID)
+					.send()
+					.end((err, res) => {
+						expect(res).to.have.status(200);
+						done();
+					})
 			});
 	});
 });
@@ -43,6 +51,60 @@ describe('Post an invalid user',() => {
 			});
 	});
 });
+
+//Get All:
+describe('Get all the users', () => {
+	it('should return a JSON with a list of users', (done) => {
+		//Create a first user:
+		chai.request(url)
+			.post('/users')
+			.send(userExample)
+			.end((err, res) => {
+				expect(res).to.have.status(201)
+				let userID1 = res.body.id;
+				//Create a second user:
+				chai.request(url)
+					.post('/users')
+					.send(userExample)
+					.end((err, res) => {
+						expect(res).to.have.status(201)
+						let userID2 = res.body.id;
+						//Get the users (what we want to test):
+						chai.request(url)
+							.get('/users')
+							.send()
+							.end((err, res) => {
+								expect(res).to.have.status(200);
+								expect(res.body).to.have.property('amount');
+								expect(res.body.amount).to.not.equal(0);
+								expect(res.body).to.have.property('users');
+								expect(res.body.users).to.be.an('array').that.is.not.empty;
+								expect(res.body.users[0]).to.have.property('firstname');
+								expect(res.body.users[0]).to.have.property('lastname');
+								expect(res.body.users[0]).to.have.property('email');
+								expect(res.body.users[0]).to.have.property('country');
+								expect(res.body.users[0]).to.have.property('phonenumber');
+								expect(res.body.users[0]).to.have.property('birthdate');
+								expect(res.body.users[0]).to.have.property('id');
+								//Delete the users that we used for the test:
+								chai.request(url)
+									.delete('/users/' + userID2)
+									.send()
+									.end((err, res) => {
+										expect(res).to.have.status(200);
+										chai.request(url)
+											.delete('/users/' + userID1)
+											.send()
+											.end((err, res) => {
+												expect(res).to.have.status(200);
+												done();
+											})
+									})
+							})
+					})
+			})
+	})
+})
 
 //Get:
 describe('Get an user by ID', () => {

@@ -26,11 +26,11 @@ const router = express.Router();
  *      schema:
  *        $ref: '#/definitions/GuestReview'
  *    responses:
- *      201:
+ *      "201":
  *        description: Guest review was created successfully
  *        schema:
  *          $ref: "#/definitions/GuestRating"
- *      500:
+ *      "500":
  *        description: The guest review could not be created
  */
 router.post('/:userId/guest_reviews', guestReviewController.createReview);
@@ -54,10 +54,22 @@ router.post('/:userId/guest_reviews', guestReviewController.createReview);
  *    responses:
  *      "200":
  *        description: Successful operation
- *        schema:
- *          type: "array"
- *          items:
- *            $ref: "#/definitions/GuestReview"
+*        schema:
+ *          type: object
+ *          properties:
+ *            userId:
+ *              type: integer
+ *              description: The id of the user reviewed
+ *              example: 1
+ *            amount:
+ *              type: integer
+ *              description: The amount of users returned
+ *              example: 1
+ *            reviews:
+ *              type: array
+ *              description: The list of reviews
+ *              items:
+ *                $ref: "#/definitions/GuestReview"
  *      "500":
  *        description: An error ocurred
  */
