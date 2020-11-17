@@ -48,7 +48,19 @@ describe('Post a new Host review', () => {
       }) 
   })
 })
-  
+
+describe('Post a host review to a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .post('/users/-1/host_reviews')
+      .send(hostReviewExample)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
+
 describe('Post an invalid host review', () => {
   it('should return an error', (done) => {
     //Create a new User for the test
@@ -78,8 +90,8 @@ describe('Post an invalid host review', () => {
 })
   
 //Get all  
-describe('Get all the host reviews of an user', () => {
-  it('should return a list of the host reviews of an user with a given ID', (done) => {
+describe('Get all the host reviews of a user', () => {
+  it('should return a list of the host reviews of a user with a given ID', (done) => {
     //Create a user
     chai.request(url)
       .post('/users')
@@ -126,9 +138,21 @@ describe('Get all the host reviews of an user', () => {
       })
   })
 })
+
+describe('Get all the host reviews of a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_reviews')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
   
 //Get 
-describe('Get an specific host review by ID', () => {
+describe('Get a specific host review by ID', () => {
   it('should return a specific host review of a specific user ID', (done) => {
     //Create a user
     chai.request(url)
@@ -174,7 +198,7 @@ describe('Get an specific host review by ID', () => {
   })
 })
   
-describe('Get an specific host review by an invalid ID', () => {
+describe('Get a specific host review by an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/host_reviews/1')

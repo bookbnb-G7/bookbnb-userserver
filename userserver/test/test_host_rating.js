@@ -49,6 +49,18 @@ describe('Post a new Host rating', () => {
       })    
   })
 })
+
+describe('Post a host rating to a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .post('/users/-1/host_rating')
+      .send(hostRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
   
 describe('Post an invalid host rating', () => {
   it('should return an error', (done) => {
@@ -78,7 +90,7 @@ describe('Post an invalid host rating', () => {
   })
 })
   
-describe('Post an host rating without enough arguments', () => {
+describe('Post a host rating without enough arguments', () => {
   it('should return an error', (done) => {
     //Create a user
     chai.request(url)
@@ -107,8 +119,8 @@ describe('Post an host rating without enough arguments', () => {
 })    
 
 //Get all
-describe('Get all the host ratings of an user', () => {
-  it('should return a list of the host ratings of an user with a given ID', (done) => {
+describe('Get all the host ratings of a user', () => {
+  it('should return a list of the host ratings of a user with a given ID', (done) => {
     //Create a user
     chai.request(url)
       .post('/users')
@@ -156,8 +168,20 @@ describe('Get all the host ratings of an user', () => {
   })
 })
 
+describe('Get all the host ratings of a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_ratings')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
+
 //Get  
-describe('Get an specific host rating by ID', () => {
+describe('Get a specific host rating by ID', () => {
   it('should return a specific host rating of a specific user ID', (done) => {
     //Create a user
     chai.request(url)
@@ -203,7 +227,7 @@ describe('Get an specific host rating by ID', () => {
   })
 })
   
-describe('Get an specific host rating by an invalid ID', () => {
+describe('Get a specific host rating by an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/host_ratings/1')
