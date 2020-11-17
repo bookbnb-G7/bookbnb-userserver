@@ -4,7 +4,7 @@
   "description": "",
   "main": "userserver/app/main.js",
   "scripts": {
-    "test": "nyc mocha ./userserver/test --color --recursive --timeout 10000",
+    "test": "nyc mocha ./userserver/test --color --recursive",
     "start": "node userserver/app/main.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
