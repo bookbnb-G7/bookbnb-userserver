@@ -1,8 +1,7 @@
 const User = require('../../model/user');
 const aux = require('../filterObjectKeys');
 
-//const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
-const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate'];
+const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
 
 exports.createUser = (req, res) => {
   const toCreate = aux.filterObjectKeys(req.body, userKeys);
