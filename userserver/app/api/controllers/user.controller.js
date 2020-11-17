@@ -1,7 +1,7 @@
 const User = require('../../model/user');
 const aux = require('../filterObjectKeys');
 
-const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate'];
+const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
 
 exports.createUser = (req, res) => {
   const toCreate = aux.filterObjectKeys(req.body, userKeys);
@@ -11,7 +11,7 @@ exports.createUser = (req, res) => {
     //also newUser needs to be converted to JSON to be able to be filtered.
     res.status(201).json(aux.filterObjectKeys(newUser.toJSON(), [...userKeys, "id"]));
   }).catch((error) => {
-    res.status(500).json({ success: "false", error: error.message });
+    res.status(500).json({ error: error.message });
   })
 }
 
@@ -20,7 +20,7 @@ exports.getUser = (req, res) => {
     if (user)
       res.status(200).json(user);
     else
-      res.status(404).json({ success:"false", error:"Not found" })
+      res.status(404).json({ success:"false", error:"not found" })
   }).catch((error) => {
     res.status(500).json({ success: "false", error: error.message });
   })
@@ -31,7 +31,7 @@ exports.getAllUsers = (req, res) => {
   User.findAll({ where: query, attributes: [...userKeys, "id"] }).then((users) => {
     res.status(200).json({ amount: users.length, users: users });
   }).catch((error) => {
-    res.status(500).json({ success: "false", error: error.message });
+    res.status(500).json({ error: error.message });
   })
 }
 
@@ -42,12 +42,12 @@ exports.updateUser = (req, res) => {
       user.update(toUpdate).then((userUpdated) => {
         res.status(200).json(aux.filterObjectKeys(userUpdated.toJSON(), [...userKeys, "id"]));
       }).catch((error) => {
-        res.status(500).json( { success: "false", error});
+        res.status(500).json( { error: error.message });
       });
     } else
-      res.status(404).json({ success:"false", error: "Not found" });
+      res.status(404).json({ error: "not found" });
   }).catch((error) => {
-    res.status(500).json({ success: "false", error: error.message });
+    res.status(500).json({ error: error.message });
   });
 }
 
@@ -57,8 +57,13 @@ exports.deleteUser = (req, res) => {
       if (result)
         res.status(200).json(result);
       else
-        res.status(404).json({ success: "false", error: "Not found" })
+        res.status(404).json({ error: "not found" })
     }).catch((error) => {
-      res.status(500).json({ success: "false", error: error.message });
+      res.status(500).json({ error: error.message });
     })
+}
+
+exports.userExists = async (id) => {
+  let user = await User.findOne({ where: {id} });
+  return user != null;
 }

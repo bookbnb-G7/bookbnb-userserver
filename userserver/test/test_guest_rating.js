@@ -49,6 +49,18 @@ describe('Post a new Guest rating', () => {
   })
 })
   
+describe('Post a guest rating to a user that doesnt exist', () => {
+  it('should return a "user not found"error', (done) => {
+    chai.request(url)
+      .post('/users/-1/guest_ratings')
+      .send(guestRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
+
 describe('Post an invalid guest rating', () => {
   it('should return an error', (done) => {
     //Create a user
@@ -77,7 +89,7 @@ describe('Post an invalid guest rating', () => {
   })
 })
   
-describe('Post an guest rating without enough arguments', () => {
+describe('Post a guest rating without enough arguments', () => {
   it('should return an error', (done) => {
     //Create a user
     chai.request(url)
@@ -106,8 +118,8 @@ describe('Post an guest rating without enough arguments', () => {
 })    
 
 //Get all
-describe('Get all the guest ratings of an user', () => {
-  it('should return a list of the guest ratings of an user with a given ID', (done) => {
+describe('Get all the guest ratings of a user', () => {
+  it('should return a list of the guest ratings of a user with a given ID', (done) => {
     //Create a user
     chai.request(url)
       .post('/users')
@@ -155,8 +167,20 @@ describe('Get all the guest ratings of an user', () => {
   })
 })
 
+describe('Get all the guest ratings of a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_ratings')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
+
 //Get  
-describe('Get an specific guest rating by ID', () => {
+describe('Get a specific guest rating by ID', () => {
   it('should return a specific guest rating of a specific user ID', (done) => {
     //Create a user
     chai.request(url)
@@ -202,7 +226,7 @@ describe('Get an specific guest rating by ID', () => {
   })
 })
   
-describe('Get an specific guest rating by an invalid ID', () => {
+describe('Get a specific guest rating by an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_ratings/1')

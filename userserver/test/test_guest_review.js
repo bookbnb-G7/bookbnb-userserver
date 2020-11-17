@@ -48,6 +48,18 @@ describe('Post a new Guest review', () => {
       }) 
   })
 })
+
+describe('Post a guest review to a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .post('/users/-1/guest_reviews')
+      .send(guestReviewExample)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
   
 describe('Post an invalid guest review', () => {
   it('should return an error', (done) => {
@@ -78,8 +90,8 @@ describe('Post an invalid guest review', () => {
 })
   
 //Get all  
-describe('Get all the guest reviews of an user', () => {
-  it('should return a list of the guest reviews of an user with a given ID', (done) => {
+describe('Get all the guest reviews of a user', () => {
+  it('should return a list of the guest reviews of a user with a given ID', (done) => {
     //Create a user
     chai.request(url)
       .post('/users')
@@ -126,9 +138,21 @@ describe('Get all the guest reviews of an user', () => {
       })
   })
 })
-  
+
+describe('Get all the guest reviews of a user that doesnt exist', () => {
+  it('should return a "user not found" error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_reviews')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+          done();
+      }) 
+  })
+})
+
 //Get 
-describe('Get an specific guest review by ID', () => {
+describe('Get a specific guest review by ID', () => {
   it('should return a specific guest review of a specific user ID', (done) => {
     //Create a user
     chai.request(url)
@@ -174,7 +198,7 @@ describe('Get an specific guest review by ID', () => {
   })
 })
   
-describe('Get an specific guest review by an invalid ID', () => {
+describe('Get a specific guest review by an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_reviews/1')

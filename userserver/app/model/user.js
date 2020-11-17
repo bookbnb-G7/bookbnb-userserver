@@ -34,6 +34,11 @@ const Sequelize = require('sequelize')
  *        format: date
  *        required: true
  *        example: "1968-06-28"
+ *      photo:
+ *        type: string
+ *        format: url
+ *        required: false
+ *        example: "https://www.cmtv.com.ar/imagenes_artistas/70.jpg?Chayanne"
  */
 
 const User = database.define('users', {
@@ -43,7 +48,8 @@ const User = database.define('users', {
   email: { type: Sequelize.STRING(50), allowNull: false, validate: { notEmpty: true, isEmail: true } },
   country: { type: Sequelize.STRING(20), allowNull: false },
   phonenumber: { type: Sequelize.STRING(20), allowNull: false },
-  birthdate: { type: Sequelize.DATEONLY, allowNull: false }
+  birthdate: { type: Sequelize.DATEONLY, allowNull: false },
+  photo: { type: Sequelize.STRING(255), allowNull: true }
 })
 
 module.exports = User;
