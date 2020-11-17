@@ -85,7 +85,7 @@ describe('Get all the users', () => {
 								expect(res.body.users[0]).to.have.property('country');
 								expect(res.body.users[0]).to.have.property('phonenumber');
 								expect(res.body.users[0]).to.have.property('birthdate');
-								//expect(res.body.users[0]).to.have.property('photo');
+								expect(res.body.users[0]).to.have.property('photo');
 								expect(res.body.users[0]).to.have.property('id');
 								//Delete the users that we used for the test:
 								chai.request(url)
@@ -129,7 +129,7 @@ describe('Get an user by ID', () => {
 						expect(res.body).to.have.property('country');
 						expect(res.body).to.have.property('phonenumber');
 						expect(res.body).to.have.property('birthdate');
-						//expect(res.body).to.have.property('photo');
+						expect(res.body).to.have.property('photo');
 						//Delete the user that we used for the test:
 						chai.request(url)
 							.delete('/users/' + userID)
@@ -171,8 +171,8 @@ describe('Update a user by ID', () => {
 					.end((err, res) => {
 						expect(res).to.have.status(200);
 						expect(res.body).to.have.property('firstname');
-						//expect(res.body).to.have.property('photo');
-						//expect(res.body.photo).to.equal('https://picsum.photos/200/300');
+						expect(res.body).to.have.property('photo');
+						expect(res.body.photo).to.equal('https://picsum.photos/200/300');
 						expect(res.body.firstname).equal('loco');
 						expect(res.body).to.not.have.property('invalidField');
 						//Delete the user:
