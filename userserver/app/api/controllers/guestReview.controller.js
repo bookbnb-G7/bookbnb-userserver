@@ -11,7 +11,7 @@ async function reviewExists(id) {
 }
 
 exports.createReview = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -31,7 +31,7 @@ exports.createReview = async (req, res) => {
 }
 
 exports.getAllReviews = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -50,7 +50,7 @@ exports.getAllReviews = async (req, res) => {
 }
 
 exports.getReview = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -74,7 +74,7 @@ exports.getReview = async (req, res) => {
 }
 
 exports.updateReview = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -103,7 +103,7 @@ exports.updateReview = async (req, res) => {
 }
 
 exports.deleteReview = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }

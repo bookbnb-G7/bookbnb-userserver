@@ -11,7 +11,7 @@ async function ratingExists(id) {
 }
 
 exports.createRating = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -31,7 +31,7 @@ exports.createRating = async (req, res) => {
 }
 
 exports.getAllRatings = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -50,7 +50,7 @@ exports.getAllRatings = async (req, res) => {
 }
 
 exports.getRating = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -74,7 +74,7 @@ exports.getRating = async (req, res) => {
 }
 
 exports.updateRating = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -103,7 +103,7 @@ exports.updateRating = async (req, res) => {
 }
 
 exports.deleteRating = async (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }

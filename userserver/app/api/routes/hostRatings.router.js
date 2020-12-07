@@ -25,7 +25,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/HostRating'
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -36,7 +36,7 @@ const router = express.Router();
  *        schema:
  *          $ref: "#/definitions/HostRating"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "500":
  *        description: The host rating could not be created
  */
@@ -58,7 +58,7 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -83,7 +83,7 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *              items:
  *                $ref: "#/definitions/HostRating"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "500":
  *        description: An error ocurred
  */
@@ -110,7 +110,7 @@ router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
  *      description: "Rating id to return"
  *      required: true
  *      type: "integer"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -121,7 +121,7 @@ router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
  *        schema:
  *          $ref: "#/definitions/HostRating"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User or rating not found
  */
@@ -151,7 +151,7 @@ router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/HostRating"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -160,7 +160,7 @@ router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
  *      "200":
  *        description: Rating updated
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User or rating not found
  */
@@ -184,7 +184,7 @@ router.patch('/:userId/host_ratings/:ratingId', hostRatingController.updateRatin
  *      description: "Rating id to be deleted"
  *      required: true
  *      type: "integer"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -193,7 +193,7 @@ router.patch('/:userId/host_ratings/:ratingId', hostRatingController.updateRatin
  *      "200":
  *        description: Rating deleted
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User or rating not found
  */

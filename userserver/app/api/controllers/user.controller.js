@@ -5,7 +5,7 @@ require('dotenv').config();
 const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
 
 exports.createUser = (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -22,7 +22,7 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -38,7 +38,7 @@ exports.getUser = (req, res) => {
 }
 
 exports.getAllUsers = (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -52,7 +52,7 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }
@@ -73,7 +73,7 @@ exports.updateUser = (req, res) => {
 }
 
 exports.deleteUser = (req, res) => {
-  if (!req.headers.access_token || req.headers.access_token != process.env.ACCESS_TOKEN) {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
     res.status(403).json({ error: "forbidden" })
     return
   }

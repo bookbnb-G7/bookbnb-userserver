@@ -20,7 +20,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/User'
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -31,7 +31,7 @@ const router = express.Router();
  *        schema:
  *          $ref: "#/definitions/User"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "500":
  *        description: The user could not be created
  */
@@ -47,7 +47,7 @@ router.post('/', userController.createUser);
  *    produces:
  *    - "application/json"
  *    parameters:
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -68,7 +68,7 @@ router.post('/', userController.createUser);
  *              items:
  *                $ref: "#/definitions/User"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      
  */
 router.get('/', userController.getAllUsers);
@@ -89,7 +89,7 @@ router.get('/', userController.getAllUsers);
  *      description: "ID of user to return"
  *      required: true
  *      type: "integer"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -100,7 +100,7 @@ router.get('/', userController.getAllUsers);
  *        schema:
  *          $ref: "#/definitions/User"
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -125,7 +125,7 @@ router.get('/:userId', userController.getUser);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/User"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -134,7 +134,7 @@ router.get('/:userId', userController.getUser);
  *      "200":
  *        description: User updated
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -153,7 +153,7 @@ router.patch('/:userId', userController.updateUser);
  *      description: "User id to delete"
  *      required: true
  *      type: "integer"
- *    - name: access_token
+ *    - name: api_key
  *      in: header
  *      required: true
  *      type: string
@@ -162,7 +162,7 @@ router.patch('/:userId', userController.updateUser);
  *      "200":
  *        description: User deleted
  *      "403":
- *        description: Forbidden, invalid access token
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */
