@@ -23,6 +23,7 @@ const Sequelize = require('sequelize')
  *        type: string
  *        required: true
  *        format: email
+ *        unique: true
  *        description: "Email of the user"
  *        example: chayanne@email.com
  *      country:

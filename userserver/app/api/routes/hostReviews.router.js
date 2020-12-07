@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users/{userId}/host_reviews/:
+ * /users/{userId}/host_reviews:
  *  post:
  *    tags:
  *    - Host Reviews
@@ -25,11 +25,18 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/HostReview'
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "201":
  *        description: Host review was created successfully
  *        schema:
  *          $ref: "#/definitions/HostRating"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "500":
  *        description: The host review could not be created
  */
@@ -37,7 +44,7 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
 
 /**
  * @swagger
- * /users/{userId}/host_reviews/:
+ * /users/{userId}/host_reviews:
  *  get:
  *    tags:
  *    - Host Reviews
@@ -51,6 +58,11 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Successful operation
@@ -70,6 +82,8 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
  *              description: The list of reviews
  *              items:
  *                $ref: "#/definitions/HostReview"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "500":
  *        description: An error ocurred
  */
@@ -96,11 +110,18 @@ router.get('/:userId/host_reviews', hostReviewController.getAllReviews);
  *      description: "Review id to return"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/HostReview"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or review not found
  */
@@ -130,9 +151,16 @@ router.get('/:userId/host_reviews/:reviewId', hostReviewController.getReview);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/HostReview"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Review updated
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or review not found
  */
@@ -156,9 +184,16 @@ router.patch('/:userId/host_reviews/:reviewId', hostReviewController.updateRevie
  *      description: "Review id to be deleted"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Review deleted
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or review not found
  */

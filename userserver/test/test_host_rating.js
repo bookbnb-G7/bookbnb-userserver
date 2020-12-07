@@ -67,16 +67,41 @@ describe('Post a new Host rating', () => {
 describe('Post a host rating to a user that doesnt exist', () => {
   it('should return a "user not found" error', (done) => {
     chai.request(url)
-      .post('/users/-1/host_rating')
+      .post('/users/-1/host_ratings')
       .set('access_token', access_token)
       .send(hostRatingExample)
       .end((err, res) => {
         expect(res).to.have.status(404);
-          done();
+        done();
       }) 
   })
 })
   
+describe('Post a host rating to a user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .post('/users/-1/host_ratings')
+      .send(hostRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      }) 
+  })
+})
+
+describe('Post a host rating to a user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .post('/users/-1/host_ratings')
+      .set('access_token', 'asdasd')
+      .send(hostRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      }) 
+  })
+})
+
 describe('Post an invalid host rating', () => {
   it('should return an error', (done) => {
     updateUserExample(userExample)
@@ -210,6 +235,31 @@ describe('Get all the host ratings of a user that doesnt exist', () => {
   })
 })
 
+describe('Get all the host ratings of a user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_ratings')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+          done();
+      }) 
+  })
+})
+
+describe('Get all the host ratings of a user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_ratings')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+          done();
+      }) 
+  })
+})
+
 //Get  
 describe('Get a specific host rating by ID', () => {
   it('should return a specific host rating of a specific user ID', (done) => {
@@ -271,6 +321,31 @@ describe('Get a specific host rating by an invalid ID', () => {
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Get a specific host rating without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_ratings/1')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Get a specific host rating with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/host_ratings/1')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })
@@ -340,6 +415,31 @@ describe('Update a host rating user with an invalid user ID', () => {
       .send({ rating: '2' })
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Update a host rating user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .patch('/users/-1/host_ratings/1')
+      .send({ rating: '2' })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Update a host rating user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .patch('/users/-1/host_ratings/1')
+      .set('access_token', 'asdasd')
+      .send({ rating: '2' })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })
@@ -435,6 +535,31 @@ describe('Delete a host rating with an invalid ID', () => {
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Delete a host rating without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .delete('/users/1/host_ratings/-1')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Delete a host rating with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .delete('/users/1/host_ratings/-1')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })

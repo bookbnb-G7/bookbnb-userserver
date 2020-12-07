@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users/{userId}/host_ratings/:
+ * /users/{userId}/host_ratings:
  *  post:
  *    tags:
  *    - Host Ratings
@@ -25,11 +25,18 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/HostRating'
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "201":
  *        description: Host rating was created successfully
  *        schema:
  *          $ref: "#/definitions/HostRating"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "500":
  *        description: The host rating could not be created
  */
@@ -37,7 +44,7 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
 
 /**
  * @swagger
- * /users/{userId}/host_ratings/:
+ * /users/{userId}/host_ratings:
  *  get:
  *    tags:
  *    - Host Ratings
@@ -51,6 +58,11 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Successful operation
@@ -70,6 +82,8 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *              description: The list of ratings
  *              items:
  *                $ref: "#/definitions/HostRating"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "500":
  *        description: An error ocurred
  */
@@ -96,11 +110,18 @@ router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
  *      description: "Rating id to return"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/HostRating"
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or rating not found
  */
@@ -130,9 +151,16 @@ router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/HostRating"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Rating updated
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or rating not found
  */
@@ -156,9 +184,16 @@ router.patch('/:userId/host_ratings/:ratingId', hostRatingController.updateRatin
  *      description: "Rating id to be deleted"
  *      required: true
  *      type: "integer"
+ *    - name: access_token
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Rating deleted
+ *      "403":
+ *        description: Forbidden, invalid access token
  *      "404":
  *        description: User or rating not found
  */

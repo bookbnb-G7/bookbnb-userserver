@@ -64,14 +64,39 @@ describe('Post a new Guest rating', () => {
 })
   
 describe('Post a guest rating to a user that doesnt exist', () => {
-  it('should return a "user not found"error', (done) => {
+  it('should return a "user not found" error', (done) => {
     chai.request(url)
       .post('/users/-1/guest_ratings')
       .set('access_token', access_token)
       .send(guestRatingExample)
       .end((err, res) => {
         expect(res).to.have.status(404);
-          done();
+        done();
+      }) 
+  })
+})
+
+describe('Post a guest rating to a user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .post('/users/-1/guest_ratings')
+      .send(guestRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      }) 
+  })
+})
+
+describe('Post a guest rating to a user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .post('/users/-1/guest_ratings')
+      .set('access_token', 'asdasd')
+      .send(guestRatingExample)
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
       }) 
   })
 })
@@ -209,6 +234,31 @@ describe('Get all the guest ratings of a user that doesnt exist', () => {
   })
 })
 
+describe('Get all the guest ratings of a user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_ratings')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+          done();
+      }) 
+  })
+})
+
+describe('Get all the guest ratings of a user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_ratings')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+          done();
+      }) 
+  })
+})
+
 //Get  
 describe('Get a specific guest rating by ID', () => {
   it('should return a specific guest rating of a specific user ID', (done) => {
@@ -270,6 +320,31 @@ describe('Get a specific guest rating by an invalid ID', () => {
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Get a specific guest rating without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_ratings/1')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Get a specific guest rating with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .get('/users/-1/guest_ratings/1')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })
@@ -339,6 +414,31 @@ describe('Update a guest rating user with an invalid user ID', () => {
       .send({ rating: '2' })
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Update a guest rating user without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .patch('/users/-1/guest_ratings/1')
+      .send({ rating: '2' })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Update a guest rating user with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .patch('/users/-1/guest_ratings/1')
+      .set('access_token', 'asdasd')
+      .send({ rating: '2' })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })
@@ -434,6 +534,31 @@ describe('Delete a guest rating with an invalid ID', () => {
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
+        done();
+      })
+  })
+})
+
+describe('Delete a guest rating without permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .delete('/users/1/guest_ratings/-1')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      })
+  })
+})
+
+describe('Delete a guest rating with wrong permission', () => {
+  it('should return a forbidden error', (done) => {
+    chai.request(url)
+      .delete('/users/1/guest_ratings/-1')
+      .set('access_token', 'asdasd')
+      .send()
+      .end((err, res) => {
+        expect(res).to.have.status(403);
         done();
       })
   })
