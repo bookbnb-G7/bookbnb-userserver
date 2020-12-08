@@ -12,7 +12,7 @@ async function ratingExists(id) {
 
 exports.createRating = async (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
   if (!(await UserController.userExists(req.params.userId))) {
@@ -32,7 +32,7 @@ exports.createRating = async (req, res) => {
 
 exports.getAllRatings = async (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
   if (!(await UserController.userExists(req.params.userId))) {
@@ -51,7 +51,7 @@ exports.getAllRatings = async (req, res) => {
 
 exports.getRating = async (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
   if (!(await UserController.userExists(req.params.userId))) {
@@ -63,7 +63,7 @@ exports.getRating = async (req, res) => {
     return;
   }
 
-  GuestRating.findOne({ where:{ id:[req.params.ratingId], userId: [req.params.userId] }, attributes: ratingKeys }).then((rating) => {
+  GuestRating.findOne({ where:{ id:[req.params.ratingId], userId: [req.params.userId] }, attributes: [...ratingKeys, "id"]}).then((rating) => {
     if (rating != null)
       res.status(200).json(rating)
     else
@@ -75,7 +75,7 @@ exports.getRating = async (req, res) => {
 
 exports.updateRating = async (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
   if (!(await UserController.userExists(req.params.userId))) {
@@ -104,7 +104,7 @@ exports.updateRating = async (req, res) => {
 
 exports.deleteRating = async (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
   if (!(await UserController.userExists(req.params.userId))) {

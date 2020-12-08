@@ -21,7 +21,7 @@ services:
     environment:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       DATABASE_URL: sqlite:///./app.db
-      API_KEY: ${API_KEY:-68b41bb674a4ae2a2fc0ca5193cdadb0}
+      API_KEY: ${API_KEY:-api_key_falsa_123}
 
 
   db:

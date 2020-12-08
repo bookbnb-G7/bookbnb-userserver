@@ -35,8 +35,8 @@ const router = express.Router();
  *        description: Guest review was created successfully
  *        schema:
  *          $ref: "#/definitions/GuestRating"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "500":
  *        description: The guest review could not be created
  */
@@ -82,8 +82,8 @@ router.post('/:userId/guest_reviews', guestReviewController.createReview);
  *              description: The list of reviews
  *              items:
  *                $ref: "#/definitions/GuestReview"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "500":
  *        description: An error ocurred
  */
@@ -120,8 +120,8 @@ router.get('/:userId/guest_reviews', guestReviewController.getAllReviews);
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/GuestReview"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or review not found
  */
@@ -159,8 +159,8 @@ router.get('/:userId/guest_reviews/:reviewId', guestReviewController.getReview);
  *    responses:
  *      "200":
  *        description: Review updated
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or review not found
  */
@@ -192,8 +192,8 @@ router.patch('/:userId/guest_reviews/:reviewId', guestReviewController.updateRev
  *    responses:
  *      "200":
  *        description: Review deleted
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or review not found
  */

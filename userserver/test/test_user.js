@@ -6,7 +6,7 @@ let randomstring = require("randomstring");
 chai.use(chaiHttp);
 const url = 'http://localhost:8080';
 
-const api_key = '68b41bb674a4ae2a2fc0ca5193cdadb0';
+const api_key = 'api_key_falsa_123';
 
 let userExample = { id: 1,
 										firstname: 'nico', 
@@ -91,27 +91,27 @@ describe('Post an invalid user',() => {
 });
 
 describe('Post an user without permission',() => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
 			.send({ firstname: 'nico' })
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
  				done();
 			});
 	});
 });
 
 describe('Post an user with wrong permission',() => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
 			.set('api_key', 'asdasd')
 			.send({ firstname: 'nico' })
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
  				done();
 			});
 	});
@@ -180,27 +180,27 @@ describe('Get all the users', () => {
 })
 
 describe('Get all users without permission',() => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.get('/users')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
  				done();
 			});
 	});
 });
 
 describe('Get all users with wrong permission',() => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.get('/users')
 			.set('api_key', 'asdasd')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
  				done();
 			});
 	});
@@ -225,6 +225,7 @@ describe('Get an user by ID', () => {
 					.send()
 					.end((err, res) => {
 						expect(res).to.have.status(200);
+						expect(res.body).to.have.property('id');
 						expect(res.body).to.have.property('firstname');
 						expect(res.body).to.have.property('lastname');
 						expect(res.body).to.have.property('email');
@@ -259,25 +260,25 @@ describe('Get an invalid user by ID', () => {
 })
 
 describe('Get a user without permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.get('/users/-1')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
 })
 
 describe('Get a user with wrong permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.get('/users/-1')
 			.set('api_key', 'asdasd')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
@@ -335,25 +336,25 @@ describe('Update a user with an invalid ID', () => {
 })
 
 describe('Update a user without permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.patch('/users/-1')
 			.send({firstname: "pepe"})
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
 })
 
 describe('Update a user with wrong permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.patch('/users/-1')
 			.set('api_key', 'asdasd')
 			.send({firstname: "pepe"})
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
@@ -406,25 +407,25 @@ describe('Delete a user with an invalid ID', () => {
 })
 
 describe('Delete a user without permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.delete('/users/-1')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
 })
 
 describe('Delete a user with wrong permission', () => {
-	it('should return a forbidden error', (done) => {
+	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.delete('/users/-1')
 			.set('api_key', 'asdasd')
 			.send()
 			.end((err, res) => {
-				expect(res).to.have.status(403);
+				expect(res).to.have.status(401);
 				done();
 			})
 	})
