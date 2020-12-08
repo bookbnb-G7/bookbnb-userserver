@@ -20,11 +20,18 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/User'
+ *    - name: api_key
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "201":
  *        description: User was created successfully
  *        schema:
  *          $ref: "#/definitions/User"
+ *      "403":
+ *        description: Forbidden, invalid api key
  *      "500":
  *        description: The user could not be created
  */
@@ -39,6 +46,12 @@ router.post('/', userController.createUser);
  *    summary: Get a list of all the Users
  *    produces:
  *    - "application/json"
+ *    parameters:
+ *    - name: api_key
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: A list of users
@@ -54,6 +67,9 @@ router.post('/', userController.createUser);
  *              description: The list of users
  *              items:
  *                $ref: "#/definitions/User"
+ *      "403":
+ *        description: Forbidden, invalid api key
+ *      
  */
 router.get('/', userController.getAllUsers);
 
@@ -73,11 +89,18 @@ router.get('/', userController.getAllUsers);
  *      description: "ID of user to return"
  *      required: true
  *      type: "integer"
+ *    - name: api_key
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/User"
+ *      "403":
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -102,9 +125,16 @@ router.get('/:userId', userController.getUser);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/User"
+ *    - name: api_key
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: User updated
+ *      "403":
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -123,9 +153,16 @@ router.patch('/:userId', userController.updateUser);
  *      description: "User id to delete"
  *      required: true
  *      type: "integer"
+ *    - name: api_key
+ *      in: header
+ *      required: true
+ *      type: string
+ *      example: token_unico_de_autorizacion
  *    responses:
  *      "200":
  *        description: User deleted
+ *      "403":
+ *        description: Forbidden, invalid api key
  *      "404":
  *        description: User not found
  */

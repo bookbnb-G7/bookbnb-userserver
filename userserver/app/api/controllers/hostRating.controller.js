@@ -1,6 +1,7 @@
 const UserController = require('./user.controller');
 const HostRating = require('../../model/hostRating');
 const aux = require('../filterObjectKeys');
+require('dotenv').config();
 
 const ratingKeys = ['rating', 'reviewer', 'reviewer_id'];
 
@@ -10,6 +11,10 @@ async function ratingExists(id) {
 }
 
 exports.createRating = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -26,6 +31,10 @@ exports.createRating = async (req, res) => {
 }
 
 exports.getAllRatings = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -41,6 +50,10 @@ exports.getAllRatings = async (req, res) => {
 }
 
 exports.getRating = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -61,6 +74,10 @@ exports.getRating = async (req, res) => {
 }
 
 exports.updateRating = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -86,6 +103,10 @@ exports.updateRating = async (req, res) => {
 }
 
 exports.deleteRating = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;

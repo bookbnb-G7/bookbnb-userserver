@@ -1,10 +1,16 @@
 const User = require('../../model/user');
 const aux = require('../filterObjectKeys');
+require('dotenv').config();
 
 const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
 
 exports.createUser = (req, res) => {
-  const toCreate = aux.filterObjectKeys(req.body, userKeys);
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
+
+  const toCreate = aux.filterObjectKeys(req.body, [...userKeys, "id"]);
   User.create(toCreate).then((newUser) => {
     //newUser contains all the attributes of the table, we want to send the client
     //only the ones in the userKeys list and the 'id'.
@@ -16,6 +22,11 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
+
   User.findOne({ where: { id: req.params.userId }, attributes: userKeys }).then((user) => {
     if (user)
       res.status(200).json(user);
@@ -27,6 +38,11 @@ exports.getUser = (req, res) => {
 }
 
 exports.getAllUsers = (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
+
   let query = aux.filterObjectKeys(req.query, [...userKeys, "id"]);
   User.findAll({ where: query, attributes: [...userKeys, "id"] }).then((users) => {
     res.status(200).json({ amount: users.length, users: users });
@@ -36,6 +52,11 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
+
   const toUpdate = aux.filterObjectKeys(req.body, userKeys);
   User.findOne({ where: {id: req.params.userId } }).then((user) => {
     if (user) {
@@ -52,6 +73,11 @@ exports.updateUser = (req, res) => {
 }
 
 exports.deleteUser = (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
+
   User.destroy({ where: { id: req.params.userId } })
     .then((result) => {
       if (result)

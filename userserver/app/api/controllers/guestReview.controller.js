@@ -1,6 +1,7 @@
 const UserController = require('./user.controller');
 const GuestReview = require('../../model/guestReview')
 const aux = require('../filterObjectKeys');
+require('dotenv').config();
 
 const reviewKeys = ['review', 'reviewer', 'reviewer_id'];
 
@@ -10,6 +11,10 @@ async function reviewExists(id) {
 }
 
 exports.createReview = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -26,6 +31,10 @@ exports.createReview = async (req, res) => {
 }
 
 exports.getAllReviews = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -41,6 +50,10 @@ exports.getAllReviews = async (req, res) => {
 }
 
 exports.getReview = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -61,6 +74,10 @@ exports.getReview = async (req, res) => {
 }
 
 exports.updateReview = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -86,6 +103,10 @@ exports.updateReview = async (req, res) => {
 }
 
 exports.deleteReview = async (req, res) => {
+  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
+    res.status(403).json({ error: "forbidden" })
+    return
+  }
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
