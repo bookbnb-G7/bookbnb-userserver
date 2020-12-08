@@ -35,8 +35,8 @@ const router = express.Router();
  *        description: Host rating was created successfully
  *        schema:
  *          $ref: "#/definitions/HostRating"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "500":
  *        description: The host rating could not be created
  */
@@ -82,8 +82,8 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *              description: The list of ratings
  *              items:
  *                $ref: "#/definitions/HostRating"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "500":
  *        description: An error ocurred
  */
@@ -120,8 +120,8 @@ router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/HostRating"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or rating not found
  */
@@ -159,8 +159,8 @@ router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
  *    responses:
  *      "200":
  *        description: Rating updated
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or rating not found
  */
@@ -192,8 +192,8 @@ router.patch('/:userId/host_ratings/:ratingId', hostRatingController.updateRatin
  *    responses:
  *      "200":
  *        description: Rating deleted
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User or rating not found
  */

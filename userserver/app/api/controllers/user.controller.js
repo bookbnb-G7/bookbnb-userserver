@@ -6,7 +6,7 @@ const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'b
 
 exports.createUser = (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
 
@@ -23,11 +23,11 @@ exports.createUser = (req, res) => {
 
 exports.getUser = (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
 
-  User.findOne({ where: { id: req.params.userId }, attributes: userKeys }).then((user) => {
+  User.findOne({ where: { id: req.params.userId }, attributes: [...userKeys, "id"]}).then((user) => {
     if (user)
       res.status(200).json(user);
     else
@@ -39,7 +39,7 @@ exports.getUser = (req, res) => {
 
 exports.getAllUsers = (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
 
@@ -53,7 +53,7 @@ exports.getAllUsers = (req, res) => {
 
 exports.updateUser = (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
 
@@ -74,7 +74,7 @@ exports.updateUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(403).json({ error: "forbidden" })
+    res.status(401).json({ error: "unauthorized" })
     return
   }
 

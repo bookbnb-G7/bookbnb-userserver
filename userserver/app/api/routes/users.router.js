@@ -30,8 +30,8 @@ const router = express.Router();
  *        description: User was created successfully
  *        schema:
  *          $ref: "#/definitions/User"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "500":
  *        description: The user could not be created
  */
@@ -67,8 +67,8 @@ router.post('/', userController.createUser);
  *              description: The list of users
  *              items:
  *                $ref: "#/definitions/User"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      
  */
 router.get('/', userController.getAllUsers);
@@ -99,8 +99,8 @@ router.get('/', userController.getAllUsers);
  *        description: Successful operation
  *        schema:
  *          $ref: "#/definitions/User"
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -133,8 +133,8 @@ router.get('/:userId', userController.getUser);
  *    responses:
  *      "200":
  *        description: User updated
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User not found
  */
@@ -161,8 +161,8 @@ router.patch('/:userId', userController.updateUser);
  *    responses:
  *      "200":
  *        description: User deleted
- *      "403":
- *        description: Forbidden, invalid api key
+ *      "401":
+ *        description: unauthorized, invalid api key
  *      "404":
  *        description: User not found
  */
