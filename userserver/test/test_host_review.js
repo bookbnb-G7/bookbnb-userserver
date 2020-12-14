@@ -6,7 +6,7 @@ let randomstring = require("randomstring");
 chai.use(chaiHttp);
 const url = 'http://localhost:8080';
 
-const api_key = 'api_key_falsa_123';
+const api_key = 'fake_api_key';
 
 const userExample = { id: 1,
                       firstname: 'nico', 
@@ -24,7 +24,7 @@ function updateUserExample(userExample){
 
 const hostReviewExample = { review: 'Muy buen host', 
                              reviewer: 'Facu T', 
-                             reviewer_id: '2' }
+                             reviewer_id: 2 }
                     
 //Post
 describe('Post a new Host review', () => {
@@ -473,7 +473,7 @@ describe('Delete a host review', () => {
                   expect(res).to.have.status(200);
                   // If we try to get the deleted review we get a not found error
                   chai.request(url)
-                    .get('/users/' + userID + '/host_reviews' + reviewID)
+                    .get('/users/' + userID + '/host_reviews/' + reviewID)
                     .set('api_key', api_key)
                     .send()
                     .end((err, res) => {

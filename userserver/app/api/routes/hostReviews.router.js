@@ -29,7 +29,7 @@ const router = express.Router();
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "201":
  *        description: Host review was created successfully
@@ -62,7 +62,7 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: Successful operation
@@ -75,7 +75,7 @@ router.post('/:userId/host_reviews', hostReviewController.createReview);
  *              example: 1
  *            amount:
  *              type: integer
- *              description: The amount of users returned
+ *              description: The amount of reviews returned
  *              example: 1
  *            reviews:
  *              type: array
@@ -114,7 +114,7 @@ router.get('/:userId/host_reviews', hostReviewController.getAllReviews);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: Successful operation
@@ -155,7 +155,7 @@ router.get('/:userId/host_reviews/:reviewId', hostReviewController.getReview);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: Review updated
@@ -188,7 +188,7 @@ router.patch('/:userId/host_reviews/:reviewId', hostReviewController.updateRevie
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: Review deleted
