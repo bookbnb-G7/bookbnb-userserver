@@ -24,7 +24,7 @@ const router = express.Router();
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "201":
  *        description: User was created successfully
@@ -51,7 +51,7 @@ router.post('/', userController.createUser);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: A list of users
@@ -93,7 +93,7 @@ router.get('/', userController.getAllUsers);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: Successful operation
@@ -129,7 +129,7 @@ router.get('/:userId', userController.getUser);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: User updated
@@ -157,7 +157,7 @@ router.patch('/:userId', userController.updateUser);
  *      in: header
  *      required: true
  *      type: string
- *      example: token_unico_de_autorizacion
+ *      example: fake_api_key
  *    responses:
  *      "200":
  *        description: User deleted
