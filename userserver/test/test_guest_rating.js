@@ -36,8 +36,6 @@ describe('Post a new Guest rating', () => {
       .set('api_key', api_key)
       .send(userExample)
       .end((err, res) => {
-        console.log(res.body)
-        console.log(res.status)
         expect(res).to.have.status(201);
         let userID = res.body.id;
         //Post a new guest rating (what we want to test):
@@ -46,8 +44,6 @@ describe('Post a new Guest rating', () => {
           .set('api_key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
-            console.log(res.body)
-            console.log(res.status)
             expect(res).to.have.status(201);
             expect(res.body).to.have.property('rating');
             expect(res.body).to.have.property('reviewer');

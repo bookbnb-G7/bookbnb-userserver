@@ -21,7 +21,7 @@ const User = require('./user')
  */
 
 
-const RoomBooking = database.define('guest_ratings', {
+const RoomBooking = database.define('room_bookings', {
   booking_id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement:false, allowNull: false},
   room_id: { type: Sequelize.INTEGER, allowNull: false }
 })
