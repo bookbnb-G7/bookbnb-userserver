@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const database = require('./db');
+const logger = require('./api/logger');
 
 const port = process.env.PORT || 8080;
 
@@ -39,7 +40,7 @@ app.use('/users', require('./api/routes/guestRatings.router'));
 
 database.sync().then(() => {
  	app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
+    logger.info(`Listening on port ${port}`)
   })
 });
 
