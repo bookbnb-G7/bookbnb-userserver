@@ -6,7 +6,7 @@ let randomstring = require("randomstring");
 chai.use(chaiHttp);
 const url = 'http://localhost:8080';
 
-const api_key = 'api_key_falsa_123';
+const api_key = 'fake_api_key';
 
 let userExample = { id: 1,
 										firstname: 'nico', 
