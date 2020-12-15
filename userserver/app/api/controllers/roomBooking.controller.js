@@ -15,7 +15,7 @@ async function bookingExists(id) {
 exports.createBooking = async (req, res) => {
 
   logger.info(`POST request to endpoint "/users/${req.params.userId}/bookings"` +
-    `\tRequest body: ${req.body}`
+    `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
   if (utils.apiKeyIsNotValid(req.headers.api_key, res))
@@ -41,7 +41,7 @@ exports.createBooking = async (req, res) => {
 exports.getAllBookings = async (req, res) => {
 
   logger.info(`GET request to endpoint "/users/${req.params.userId}/bookings"` +
-    `\tRequest query: ${req.query}`
+    `\tRequest query: ${JSON.stringify(req.query)}`
   );
 
   if (utils.apiKeyIsNotValid(req.headers.api_key, res))

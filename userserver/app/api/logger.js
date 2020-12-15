@@ -11,7 +11,7 @@ module.exports = createLogger({
   ),
   transports: [
     new transports.File({
-      maxsize: 10485760,
+      maxsize: 31457280, //30MB
       maxfiles: 75,
       filename: `${__dirname}/../../logs/userserver-${filedate}.log`
     }),

@@ -9,7 +9,7 @@ const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'b
 exports.createUser = (req, res) => {
 
   logger.info('POST request to endpoint "/users"\n' +
-    `\tRequest body: ${req.body}`
+    `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
   if (utils.apiKeyIsNotValid(req.headers.api_key, res))
@@ -48,7 +48,7 @@ exports.getUser = (req, res) => {
 exports.getAllUsers = (req, res) => {
 
   logger.info('GET request to endpoint "/users"\n' +
-    `\tRequest query: ${req.query}`
+    `\tRequest query: ${JSON.stringify(req.query)}`
   );
 
   if (utils.apiKeyIsNotValid(req.headers.api_key, res))
@@ -65,7 +65,7 @@ exports.getAllUsers = (req, res) => {
 exports.updateUser = (req, res) => {
 
   logger.info(`PATCH request to endpoint "/users/${req.params.userId}"` +
-    `\tRequest body: ${req.body}`
+    `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
   if (utils.apiKeyIsNotValid(req.headers.api_key, res))
