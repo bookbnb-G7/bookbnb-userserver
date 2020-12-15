@@ -29,7 +29,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.json({message:'userserver'});
+    logger.info('GET request to endpoint "/"\n' +
+              '\tResponse status: 200\n' +
+              `\tResponse body: {message:'userserver'}`
+    );
+    res.status(200).json({message:'userserver'});
 })
 
 app.use('/users', require('./api/routes/users.router'));

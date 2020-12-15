@@ -1,7 +1,9 @@
 const UserController = require('./user.controller');
 const RoomBooking = require('../../model/roomBooking');
 const aux = require('../filterObjectKeys');
+const utils = require('../reqResUtils');
 require('dotenv').config();
+const logger = require('../logger');
 
 const roomBookingKeys = ['booking_id', 'room_id'];
 
@@ -12,12 +14,15 @@ async function bookingExists(id) {
 
 exports.createBooking = async (req, res) => {
 
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+  logger.info(`POST request to endpoint "/users/${req.params.userId}/bookings"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
-    res.status(404).json({ error: "user not found" });
+    utils.respond(res, 404, { error: "user not found" });
     return;
   }
   
@@ -25,40 +30,48 @@ exports.createBooking = async (req, res) => {
   bookingParams = {...req.params, ...toCreate};
 
   RoomBooking.create(bookingParams).then((newBooking) => {
-    res.status(201).json(aux.filterObjectKeys(newBooking.toJSON(), [...roomBookingKeys, "userId"]));
+    logger.info('Room booking created');
+    utils.respond(res, 201, aux.filterObjectKeys(newBooking.toJSON(), [...roomBookingKeys, "userId"]));
   }).catch((error) => {
-    res.status(500).json({ error: error.message });
+    logger.info('Room booking could not be created');
+    utils.respond(res, 500, { error: error.message });
   })
 }
 
 exports.getAllBookings = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/bookings"` +
+    `\tRequest query: ${req.query}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
-    res.status(404).json({ error: "user not found" });
+    utils.respond(res, 404, { error: "user not found" });
     return;
   }
 
   RoomBooking.findAll({ where: { userId: req.params.userId }, attributes: [...roomBookingKeys, "userId"] }).then((bookings) => {
-    res.status(200).json({ userId: req.params.userId, amount: bookings.length, bookings: bookings });
+    utils.respond(res, 200, { userId: req.params.userId, amount: bookings.length, bookings: bookings });
   }).catch((error) => {
-    res.status(500).json({ error: error.message });
+    utils.respond(res, 500, { error: error.message });
   })
 }
 
 exports.getBooking = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/bookings/${req.params.roomBookingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
-    res.status(404).json({ error: "user not found" });
+    utils.respond(res, 404, { error: "user not found" });
     return;
   }
   if (!(await bookingExists(req.params.roomBookingId))) {
-    res.status(404).json({ error: "booking not found" });
+    utils.respond(res, 404, { error: "booking not found" });
     return;
   }
 
@@ -66,35 +79,38 @@ exports.getBooking = async (req, res) => {
                                 attributes: [...roomBookingKeys, "userId"]
                               }).then((booking) => {
     if (booking != null)
-      res.status(200).json(booking)
+      utils.respond(res, 200, booking);
     else
-      res.status(404).json({ error: "no relation between user and room booking" });
+      utils.respond(res, 404, { error: "no relation between user and room booking" });
   }).catch((error) => {
-    res.status(500).json({ error: error.message });
+    utils.respond(res, 500, { error: error.message });
   })
 }
 
 exports.deleteBooking = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/bookings/${req.params.roomBookingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
-    res.status(404).json({ error: "user not found" });
+    utils.respond(res, 404, { error: "user not found" });
     return;
   }
   if (!(await bookingExists(req.params.roomBookingId))) {
-    res.status(404).json({ error: "booking not found" });
+    utils.respond(res, 404, { error: "booking not found" });
     return;
   }
 
   RoomBooking.destroy({ where: { booking_id: req.params.roomBookingId, userId: req.params.userId } })
     .then((result) => {
-      if (result)
-        res.status(200).json(result);
-      else
-        res.status(404).json({ error: "no relation between user and room booking" })
+      if (result){
+        logger.info('Room booking deleted');
+        utils.respond(res, 200, result);
+      } else
+        utils.respond(res, 404, { error: "no relation between user and room booking" });
     }).catch((error) => {
-      res.status(500).json({ error: error.message });
+      utils.respond(res, 500, { error: error.message });
     })
 }

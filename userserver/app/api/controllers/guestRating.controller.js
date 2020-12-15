@@ -1,7 +1,9 @@
 const UserController = require('./user.controller');
 const GuestRating = require('../../model/guestRating')
 const aux = require('../filterObjectKeys');
+const utils = require('../reqResUtils');
 require('dotenv').config();
+const logger = require('../logger');
 
 const ratingKeys = ['rating', 'reviewer', 'reviewer_id'];
 
@@ -11,10 +13,14 @@ async function ratingExists(id) {
 }
 
 exports.createRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`POST request to endpoint "/users/${req.params.userId}/guest_ratings"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -24,17 +30,23 @@ exports.createRating = async (req, res) => {
   rating_params = {...req.params, ...toCreate};
 
   GuestRating.create(rating_params).then((newRating) => {
+    logger.info('Guest rating created');
     res.status(201).json(aux.filterObjectKeys(newRating.toJSON(), [...ratingKeys, "id"]));
   }).catch((error) => {
+    logger.info('Guest rating could not be created');
     res.status(500).json({ error: error.message, params: req.params });
   })
 }
 
 exports.getAllRatings = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/guest_ratings"` +
+    `\tRequest query: ${req.query}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -50,10 +62,12 @@ exports.getAllRatings = async (req, res) => {
 }
 
 exports.getRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/guest_ratings/${req.params.ratingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -74,10 +88,14 @@ exports.getRating = async (req, res) => {
 }
 
 exports.updateRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`PATCH request to endpoint "/users/${req.params.userId}/guest_ratings/${req.params.ratingId}"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -91,8 +109,10 @@ exports.updateRating = async (req, res) => {
   GuestRating.findOne({ where: { id: req.params.ratingId, userId: req.params.userId } }).then((rating) => {
     if (rating) {
       rating.update(toUpdate).then((ratingUpdated) => {
+        logger.info('Guest rating updated');
         res.status(200).json(aux.filterObjectKeys(ratingUpdated.toJSON(), [...ratingKeys, "id"]));
       }).catch((error) => {
+        logger.info('Guest rating could not be updated');
         res.status(500).json( { error: error.message});
       });
     } else
@@ -103,10 +123,12 @@ exports.updateRating = async (req, res) => {
 }
 
 exports.deleteRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/guest_ratings/${req.params.ratingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;

@@ -1,7 +1,9 @@
 const UserController = require('./user.controller');
 const HostReview = require('../../model/hostReview');
 const aux = require('../filterObjectKeys');
+const utils = require('../reqResUtils');
 require('dotenv').config();
+const logger = require('../logger');
 
 const reviewKeys = ['review', 'reviewer', 'reviewer_id'];
 
@@ -11,10 +13,14 @@ async function reviewExists(id) {
 }
 
 exports.createReview = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`POST request to endpoint "/users/${req.params.userId}/host_reviews"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -23,17 +29,23 @@ exports.createReview = async (req, res) => {
   const toCreate = aux.filterObjectKeys(req.body, reviewKeys);
   review_params = {...req.params, ...toCreate};
   HostReview.create(review_params).then((newReview) => {
+    logger.info('Host review created');
     res.status(201).json(aux.filterObjectKeys(newReview.toJSON(), [...reviewKeys, "id"]));
   }).catch((error) => {
+    logger.info('Host review could not be created');
     res.status(500).json({ error: error.message });
   })
 }
 
 exports.getAllReviews = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/host_reviews"` +
+    `\tRequest query: ${req.query}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -49,10 +61,12 @@ exports.getAllReviews = async (req, res) => {
 }
 
 exports.getReview = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/host_reviews/${req.params.reviewId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -73,10 +87,14 @@ exports.getReview = async (req, res) => {
 }
 
 exports.updateReview = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`PATCH request to endpoint "/users/${req.params.userId}/host_reviews/${req.params.reviewId}"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -90,8 +108,10 @@ exports.updateReview = async (req, res) => {
   HostReview.findOne({ where: { id: req.params.reviewId, userId: req.params.userId } }).then((review) => {
     if (review) {
       review.update(toUpdate).then((reviewUpdated) => {
-      res.status(200).json(aux.filterObjectKeys(reviewUpdated.toJSON(), [...reviewKeys, "id"]));
+        logger.info('Host review updated');
+        res.status(200).json(aux.filterObjectKeys(reviewUpdated.toJSON(), [...reviewKeys, "id"]));
       }).catch((error) => {
+        logger.info('Host review could not be updated');
         res.status(500).json( { error: error.message});
       });
     } else
@@ -102,10 +122,12 @@ exports.updateReview = async (req, res) => {
 }
 
 exports.deleteReview = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/host_reviews/${req.params.reviewId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;

@@ -1,7 +1,9 @@
 const UserController = require('./user.controller');
 const HostRating = require('../../model/hostRating');
 const aux = require('../filterObjectKeys');
+const utils = require('../reqResUtils');
 require('dotenv').config();
+const logger = require('../logger');
 
 const ratingKeys = ['rating', 'reviewer', 'reviewer_id'];
 
@@ -11,10 +13,14 @@ async function ratingExists(id) {
 }
 
 exports.createRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`POST request to endpoint "/users/${req.params.userId}/host_ratings"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -31,10 +37,14 @@ exports.createRating = async (req, res) => {
 }
 
 exports.getAllRatings = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/host_ratings"` +
+    `\tRequest query: ${req.query}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -50,10 +60,12 @@ exports.getAllRatings = async (req, res) => {
 }
 
 exports.getRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -74,10 +86,14 @@ exports.getRating = async (req, res) => {
 }
 
 exports.updateRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`PATCH request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"` +
+    `\tRequest body: ${req.body}`
+  );
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
@@ -103,10 +119,12 @@ exports.updateRating = async (req, res) => {
 }
 
 exports.deleteRating = async (req, res) => {
-  if (!req.headers.api_key || req.headers.api_key != process.env.API_KEY) {
-    res.status(401).json({ error: "unauthorized" })
-    return
-  }
+
+  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"`);
+
+  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+    return;
+
   if (!(await UserController.userExists(req.params.userId))) {
     res.status(404).json({ error: "user not found" });
     return;
