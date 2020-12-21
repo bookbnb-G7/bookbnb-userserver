@@ -1,30 +1,13 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
-let randomstring = require("randomstring");
+const { userExample, updateUserExample, guestRatingExample } = require('./examples');
 
 chai.use(chaiHttp);
 const url = 'http://localhost:8080';
 
 const api_key = 'fake_api_key';
 
-const userExample = { id: 1,
-                      firstname: 'nico', 
-                      lastname: 'fandos', 
-                      email: 'nico@nico.com', 
-                      country: 'Argentina', 
-                      phonenumber: '541111111111', 
-                      birthdate: '1998-12-06' };
-
-// Updates email to generate a random one and the id to have a different one
-function updateUserExample(userExample){	
-	userExample.email = randomstring.generate(7) + '@email.com';
-	userExample.id = userExample.id + 1;
-}
-
-const guestRatingExample = { rating: '5', 
-                             reviewer: 'Facu T', 
-                             reviewer_id: 2 }
 
 //Post
 describe('Post a new Guest rating', () => {
