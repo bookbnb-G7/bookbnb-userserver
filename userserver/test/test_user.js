@@ -1,27 +1,13 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
-let randomstring = require("randomstring");
+
+const { userExample, updateUserExample } = require('./examples');
 
 chai.use(chaiHttp);
 const url = 'http://localhost:8080';
 
 const api_key = 'fake_api_key';
-
-let userExample = { id: 1,
-										firstname: 'nico', 
-                    lastname: 'fandos', 
-                    email: 'nico@nico.com', 
-                    country: 'Argentina', 
-                    phonenumber: '541111111111', 
-										birthdate: '1998-12-06' };
-
-// Updates email to generate a random one and the id to have a different one
-function updateUserExample(userExample){	
-	userExample.email = randomstring.generate(7) + '@email.com';
-	userExample.id = userExample.id + 1;
-}
-
 
 //Post:
 describe('Post a new User',() => {
@@ -29,7 +15,7 @@ describe('Post a new User',() => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201);
@@ -44,7 +30,7 @@ describe('Post a new User',() => {
 				let userID = res.body.id;
 				chai.request(url)
 					.delete('/users/' + userID)
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send()
 					.end((err, res) => {
 						expect(res).to.have.status(200);
@@ -59,14 +45,14 @@ describe('Post a user with the email of another that already exists',() => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201);
 				userExample.id = userExample.id + 1;
 				chai.request(url)
 					.post('/users')
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send(userExample)
 					.end((err, res) => {
 						expect(res).to.have.status(500);
@@ -81,7 +67,7 @@ describe('Post an invalid user',() => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send({ firstname: 'nico' })
 			.end((err, res) => {
 				expect(res).to.have.status(500);
@@ -108,7 +94,7 @@ describe('Post an user with wrong permission',() => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.post('/users')
-			.set('api_key', 'asdasd')
+			.set('api-key', 'asdasd')
 			.send({ firstname: 'nico' })
 			.end((err, res) => {
 				expect(res).to.have.status(401);
@@ -124,7 +110,7 @@ describe('Get all the users', () => {
 		//Create a first user:
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201)
@@ -133,7 +119,7 @@ describe('Get all the users', () => {
 				//Create a second user:
 				chai.request(url)
 					.post('/users')
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send(userExample)
 					.end((err, res) => {
 						expect(res).to.have.status(201)
@@ -141,7 +127,7 @@ describe('Get all the users', () => {
 						//Get the users (what we want to test):
 						chai.request(url)
 							.get('/users')
-							.set('api_key', api_key)
+							.set('api-key', api_key)
 							.send()
 							.end((err, res) => {
 								expect(res).to.have.status(200);
@@ -160,13 +146,13 @@ describe('Get all the users', () => {
 								//Delete the users that we used for the test:
 								chai.request(url)
 									.delete('/users/' + userID2)
-									.set('api_key', api_key)
+									.set('api-key', api_key)
 									.send()
 									.end((err, res) => {
 										expect(res).to.have.status(200);
 										chai.request(url)
 											.delete('/users/' + userID1)
-											.set('api_key', api_key)
+											.set('api-key', api_key)
 											.send()
 											.end((err, res) => {
 												expect(res).to.have.status(200);
@@ -197,7 +183,7 @@ describe('Get all users with wrong permission',() => {
 		updateUserExample(userExample);
 		chai.request(url)
 			.get('/users')
-			.set('api_key', 'asdasd')
+			.set('api-key', 'asdasd')
 			.send()
 			.end((err, res) => {
 				expect(res).to.have.status(401);
@@ -213,7 +199,7 @@ describe('Get an user by ID', () => {
 		//Create a user first:
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201)
@@ -221,7 +207,7 @@ describe('Get an user by ID', () => {
 				//Get the user by ID (what we want to test):
 				chai.request(url)
 					.get('/users/' + userID)
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send()
 					.end((err, res) => {
 						expect(res).to.have.status(200);
@@ -236,7 +222,7 @@ describe('Get an user by ID', () => {
 						//Delete the user that we used for the test:
 						chai.request(url)
 							.delete('/users/' + userID)
-							.set('api_key', api_key)
+							.set('api-key', api_key)
 							.send()
 							.end((err, res) => {
 								done();
@@ -250,7 +236,7 @@ describe('Get an invalid user by ID', () => {
 	it('should return a "not found" error', (done) => {
 		chai.request(url)
 			.get('/users/-1')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send()
 			.end((err, res) => {
 				expect(res).to.have.status(404);
@@ -275,7 +261,7 @@ describe('Get a user with wrong permission', () => {
 	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.get('/users/-1')
-			.set('api_key', 'asdasd')
+			.set('api-key', 'asdasd')
 			.send()
 			.end((err, res) => {
 				expect(res).to.have.status(401);
@@ -291,7 +277,7 @@ describe('Update a user by ID', () => {
 		//Create a user
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201);
@@ -299,7 +285,7 @@ describe('Update a user by ID', () => {
 				//Patch the user (what we want to test):
 				chai.request(url)
 					.patch('/users/' + userID)
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send({ firstname: "loco", photo: 'https://picsum.photos/200/300', invalidField: "i shouldnt be added" })
 					.end((err, res) => {
 						expect(res).to.have.status(200);
@@ -311,7 +297,7 @@ describe('Update a user by ID', () => {
 						//Delete the user:
 						chai.request(url)
 							.delete('/users/' + userID)
-							.set('api_key', api_key)
+							.set('api-key', api_key)
 							.send()
 							.end((err, res) => {
 								expect(res).to.have.status(200);
@@ -326,7 +312,7 @@ describe('Update a user with an invalid ID', () => {
 	it('should return a "not found" error', (done) => {
 		chai.request(url)
 			.patch('/users/-1')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send({firstname: "pepe"})
 			.end((err, res) => {
 				expect(res).to.have.status(404);
@@ -351,7 +337,7 @@ describe('Update a user with wrong permission', () => {
 	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.patch('/users/-1')
-			.set('api_key', 'asdasd')
+			.set('api-key', 'asdasd')
 			.send({firstname: "pepe"})
 			.end((err, res) => {
 				expect(res).to.have.status(401);
@@ -367,7 +353,7 @@ describe('Delete a user', () => {
 		//Create a user
 		chai.request(url)
 			.post('/users')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send(userExample)
 			.end((err, res) => {
 				expect(res).to.have.status(201);
@@ -375,14 +361,14 @@ describe('Delete a user', () => {
 				//Delete a user (what we want to test):
 				chai.request(url)
 					.delete('/users/' + userID)
-					.set('api_key', api_key)
+					.set('api-key', api_key)
 					.send()
 					.end((err, res) => {
 						expect(res).to.have.status(200);
 						//Now if we want to get the user we will get a not found error:
 						chai.request(url)
 							.get('/users/' + userID)
-							.set('api_key', api_key)
+							.set('api-key', api_key)
 							.send()
 							.end((err, res) => {
 								expect(res).to.have.status(404);
@@ -397,7 +383,7 @@ describe('Delete a user with an invalid ID', () => {
 	it('should return a "not found" error', (done) => {
 		chai.request(url)
 			.delete('/users/-1')
-			.set('api_key', api_key)
+			.set('api-key', api_key)
 			.send()
 			.end((err, res) => {
 				expect(res).to.have.status(404);
@@ -422,7 +408,7 @@ describe('Delete a user with wrong permission', () => {
 	it('should return a unauthorized error', (done) => {
 		chai.request(url)
 			.delete('/users/-1')
-			.set('api_key', 'asdasd')
+			.set('api-key', 'asdasd')
 			.send()
 			.end((err, res) => {
 				expect(res).to.have.status(401);

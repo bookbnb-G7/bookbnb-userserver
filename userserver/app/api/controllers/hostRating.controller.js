@@ -18,7 +18,7 @@ exports.createRating = async (req, res) => {
     `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -44,7 +44,7 @@ exports.getAllRatings = async (req, res) => {
     `\tRequest query: ${JSON.stringify(req.query)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -65,7 +65,7 @@ exports.getRating = async (req, res) => {
 
   logger.info(`GET request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -93,7 +93,7 @@ exports.updateRating = async (req, res) => {
     `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -126,7 +126,7 @@ exports.deleteRating = async (req, res) => {
 
   logger.info(`DELETE request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {

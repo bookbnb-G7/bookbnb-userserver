@@ -18,7 +18,7 @@ exports.createBooking = async (req, res) => {
     `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -44,7 +44,7 @@ exports.getAllBookings = async (req, res) => {
     `\tRequest query: ${JSON.stringify(req.query)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -63,7 +63,7 @@ exports.getBooking = async (req, res) => {
 
   logger.info(`GET request to endpoint "/users/${req.params.userId}/bookings/${req.params.roomBookingId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -91,7 +91,7 @@ exports.deleteBooking = async (req, res) => {
 
   logger.info(`DELETE request to endpoint "/users/${req.params.userId}/bookings/${req.params.roomBookingId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
