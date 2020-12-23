@@ -12,7 +12,7 @@ exports.createUser = (req, res) => {
     `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   const toCreate = aux.filterObjectKeys(req.body, [...userKeys, "id"]);
@@ -32,7 +32,7 @@ exports.getUser = (req, res) => {
 
   logger.info(`GET request to endpoint "/users/${req.params.userId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   User.findOne({ where: { id: req.params.userId }, attributes: [...userKeys, "id"]}).then((user) => {
@@ -51,7 +51,7 @@ exports.getAllUsers = (req, res) => {
     `\tRequest query: ${JSON.stringify(req.query)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   let query = aux.filterObjectKeys(req.query, [...userKeys, "id"]);
@@ -68,7 +68,7 @@ exports.updateUser = (req, res) => {
     `\tRequest body: ${JSON.stringify(req.body)}`
   );
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   const toUpdate = aux.filterObjectKeys(req.body, userKeys);
@@ -91,7 +91,7 @@ exports.deleteUser = (req, res) => {
 
   logger.info(`DELETE request to endpoint "/users/${req.params.userId}"`);
 
-  if (utils.apiKeyIsNotValid(req.headers.api_key, res))
+  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
   User.destroy({ where: { id: req.params.userId } })

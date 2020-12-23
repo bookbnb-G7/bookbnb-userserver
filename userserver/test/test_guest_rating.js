@@ -16,7 +16,7 @@ describe('Post a new Guest rating', () => {
     //Create a new User for the test
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -24,7 +24,7 @@ describe('Post a new Guest rating', () => {
         //Post a new guest rating (what we want to test):
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
@@ -35,7 +35,7 @@ describe('Post a new Guest rating', () => {
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -50,7 +50,7 @@ describe('Post a guest rating to a user that doesnt exist', () => {
   it('should return a "user not found" error', (done) => {
     chai.request(url)
       .post('/users/-1/guest_ratings')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(guestRatingExample)
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -75,7 +75,7 @@ describe('Post a guest rating to a user with wrong permission', () => {
   it('should return a unauthorized error', (done) => {
     chai.request(url)
       .post('/users/-1/guest_ratings')
-      .set('api_key', 'asdasd')
+      .set('api-key', 'asdasd')
       .send(guestRatingExample)
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -90,7 +90,7 @@ describe('Post an invalid guest rating', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -98,14 +98,14 @@ describe('Post an invalid guest rating', () => {
         //Post an invalid guest rating (what we want to test)
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send({ rating: 'a', reviewer: 'NombreLoco', reviewer_id: '5' })
           .end((err, res) => {
             expect(res).to.have.status(500);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -122,7 +122,7 @@ describe('Post a guest rating without enough arguments', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -130,14 +130,14 @@ describe('Post a guest rating without enough arguments', () => {
         //Post an invalid guest rating (what we want to test)
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send({ reviewer: 'NombreLoco', reviewer_id: '5' })
           .end((err, res) => {
             expect(res).to.have.status(500);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -155,7 +155,7 @@ describe('Get all the guest ratings of a user', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -163,7 +163,7 @@ describe('Get all the guest ratings of a user', () => {
         //Post a guest rating
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
@@ -171,7 +171,7 @@ describe('Get all the guest ratings of a user', () => {
             //Get all the guest ratings of the user (what we want to test)
             chai.request(url)
               .get('/users/' + userID + '/guest_ratings')
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -184,14 +184,14 @@ describe('Get all the guest ratings of a user', () => {
                 //Delete the rating
                 chai.request(url)
                   .delete('/users/' + userID + '/guest_ratings/' + ratingID)
-                  .set('api_key', api_key)
+                  .set('api-key', api_key)
                   .send()
                   .end((err, res) => {
                     expect(res).to.have.status(200);
                     //Delete the user
                     chai.request(url)
                       .delete('/users/' + userID)
-                      .set('api_key', api_key)
+                      .set('api-key', api_key)
                       .send()
                       .end((err, res) => {
                         expect(res).to.have.status(200);
@@ -208,7 +208,7 @@ describe('Get all the guest ratings of a user that doesnt exist', () => {
   it('should return a "user not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_ratings')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -233,7 +233,7 @@ describe('Get all the guest ratings of a user with wrong permission', () => {
   it('should return a unauthorized error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_ratings')
-      .set('api_key', 'asdasd')
+      .set('api-key', 'asdasd')
       .send()
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -249,7 +249,7 @@ describe('Get a specific guest rating by ID', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -257,7 +257,7 @@ describe('Get a specific guest rating by ID', () => {
         //Post a guest rating
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
@@ -265,7 +265,7 @@ describe('Get a specific guest rating by ID', () => {
             //Get the guest rating of the user (what we want to test)
             chai.request(url)
               .get('/users/' + userID + '/guest_ratings/' + ratingID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -275,14 +275,14 @@ describe('Get a specific guest rating by ID', () => {
                 //Delete the rating
                 chai.request(url)
                   .delete('/users/' + userID + '/guest_ratings/' + ratingID)
-                  .set('api_key', api_key)
+                  .set('api-key', api_key)
                   .send()
                   .end((err, res) => {
                     expect(res).to.have.status(200);
                     //Delete the user
                     chai.request(url)
                       .delete('/users/' + userID)
-                      .set('api_key', api_key)
+                      .set('api-key', api_key)
                       .send()
                       .end((err, res) => {
                         expect(res).to.have.status(200);
@@ -299,7 +299,7 @@ describe('Get a specific guest rating by an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_ratings/1')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -324,7 +324,7 @@ describe('Get a specific guest rating with wrong permission', () => {
   it('should return a unauthorized error', (done) => {
     chai.request(url)
       .get('/users/-1/guest_ratings/1')
-      .set('api_key', 'asdasd')
+      .set('api-key', 'asdasd')
       .send()
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -340,7 +340,7 @@ describe('Update a guest rating of a user by ID', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -348,7 +348,7 @@ describe('Update a guest rating of a user by ID', () => {
         //Post a guest rating
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
@@ -356,7 +356,7 @@ describe('Update a guest rating of a user by ID', () => {
             //Patch the guest rating of the user (what we want to test)
             chai.request(url)
               .patch('/users/' + userID + '/guest_ratings/' + ratingID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send({ rating: '3', invalidField: 'i shouldnt be added' })
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -369,14 +369,14 @@ describe('Update a guest rating of a user by ID', () => {
                 //Delete the rating
                 chai.request(url)
                   .delete('/users/' + userID + '/guest_ratings/' + ratingID)
-                  .set('api_key', api_key)
+                  .set('api-key', api_key)
                   .send()
                   .end((err, res) => {
                     expect(res).to.have.status(200);
                     //Delete the user
                     chai.request(url)
                       .delete('/users/' + userID)
-                      .set('api_key', api_key)
+                      .set('api-key', api_key)
                       .send()
                       .end((err, res) => {
                         expect(res).to.have.status(200);
@@ -393,7 +393,7 @@ describe('Update a guest rating user with an invalid user ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .patch('/users/-1/guest_ratings/1')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send({ rating: '2' })
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -418,7 +418,7 @@ describe('Update a guest rating user with wrong permission', () => {
   it('should return a unauthorized error', (done) => {
     chai.request(url)
       .patch('/users/-1/guest_ratings/1')
-      .set('api_key', 'asdasd')
+      .set('api-key', 'asdasd')
       .send({ rating: '2' })
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -433,7 +433,7 @@ describe('Update a guest rating user with an invalid rating ID', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -441,14 +441,14 @@ describe('Update a guest rating user with an invalid rating ID', () => {
         //Patch an invalid rating (what we want to test):
         chai.request(url)
           .patch('/users/' + userID + '/guest_ratings/-1')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send({ rating: '4' })
           .end((err, res) => {
             expect(res).to.have.status(404);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
-              .set('api_key', api_key)
+              .set('api-key', api_key)
               .send()
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -466,7 +466,7 @@ describe('Delete a guest rating', () => {
     //Create a user
     chai.request(url)
       .post('/users')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send(userExample)
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -474,7 +474,7 @@ describe('Delete a guest rating', () => {
         //Post a guest rating
         chai.request(url)
           .post('/users/' + userID + '/guest_ratings')
-          .set('api_key', api_key)
+          .set('api-key', api_key)
           .send(guestRatingExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
@@ -482,21 +482,21 @@ describe('Delete a guest rating', () => {
             //Delete the rating (what we want to test)
               chai.request(url)
                 .delete('/users/' + userID + '/guest_ratings/' + ratingID)
-                .set('api_key', api_key)
+                .set('api-key', api_key)
                 .send()
                 .end((err, res) => {
                   expect(res).to.have.status(200);
                   // If we try to get the deleted rating we get a not found error
                   chai.request(url)
                     .get('/users/' + userID + '/guest_ratings/' + ratingID)
-                    .set('api_key', api_key)
+                    .set('api-key', api_key)
                     .send()
                     .end((err, res) => {
                       expect(res).to.have.status(404);
                       //Delete the user
                       chai.request(url)
                         .delete('/users/' + userID)
-                        .set('api_key', api_key)
+                        .set('api-key', api_key)
                         .send()
                         .end((err, res) => {
                           expect(res).to.have.status(200);
@@ -513,7 +513,7 @@ describe('Delete a guest rating with an invalid ID', () => {
   it('should return a "not found" error', (done) => {
     chai.request(url)
       .delete('/users/1/guest_ratings/-1')
-      .set('api_key', api_key)
+      .set('api-key', api_key)
       .send()
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -538,7 +538,7 @@ describe('Delete a guest rating with wrong permission', () => {
   it('should return a unauthorized error', (done) => {
     chai.request(url)
       .delete('/users/1/guest_ratings/-1')
-      .set('api_key', 'asdasd')
+      .set('api-key', 'asdasd')
       .send()
       .end((err, res) => {
         expect(res).to.have.status(401);
