@@ -25,7 +25,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/GuestReview'
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -58,7 +58,7 @@ router.post('/:userId/guest_reviews', guestReviewController.createReview);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -66,7 +66,7 @@ router.post('/:userId/guest_reviews', guestReviewController.createReview);
  *    responses:
  *      "200":
  *        description: Successful operation
-*        schema:
+ *        schema:
  *          type: object
  *          properties:
  *            userId:
@@ -110,7 +110,7 @@ router.get('/:userId/guest_reviews', guestReviewController.getAllReviews);
  *      description: "Review id to return"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -151,7 +151,7 @@ router.get('/:userId/guest_reviews/:reviewId', guestReviewController.getReview);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/GuestReview"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -184,7 +184,7 @@ router.patch('/:userId/guest_reviews/:reviewId', guestReviewController.updateRev
  *      description: "Review id to be deleted"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string

@@ -25,7 +25,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/HostRating'
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -58,7 +58,7 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -66,7 +66,7 @@ router.post('/:userId/host_ratings', hostRatingController.createRating);
  *    responses:
  *      "200":
  *        description: Successful operation
-*        schema:
+ *        schema:
  *          type: object
  *          properties:
  *            userId:
@@ -110,7 +110,7 @@ router.get('/:userId/host_ratings', hostRatingController.getAllRatings);
  *      description: "Rating id to return"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -151,7 +151,7 @@ router.get('/:userId/host_ratings/:ratingId', hostRatingController.getRating);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/HostRating"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -184,7 +184,7 @@ router.patch('/:userId/host_ratings/:ratingId', hostRatingController.updateRatin
  *      description: "Rating id to be deleted"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string

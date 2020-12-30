@@ -25,7 +25,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/RoomBooking'
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -58,7 +58,7 @@ router.post('/:userId/bookings', roomBookingController.createBooking);
  *      description: "ID of a specific user"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -110,7 +110,7 @@ router.get('/:userId/bookings', roomBookingController.getAllBookings);
  *      description: "Room booking id to return"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -145,7 +145,7 @@ router.get('/:userId/bookings/:roomBookingId', roomBookingController.getBooking)
  *      description: "Room booking id to be deleted"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
