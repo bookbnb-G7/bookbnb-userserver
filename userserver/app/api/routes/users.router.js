@@ -20,7 +20,7 @@ const router = express.Router();
  *      required: true
  *      schema:
  *        $ref: '#/definitions/User'
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -47,7 +47,7 @@ router.post('/', userController.createUser);
  *    produces:
  *    - "application/json"
  *    parameters:
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -89,7 +89,7 @@ router.get('/', userController.getAllUsers);
  *      description: "ID of user to return"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -125,7 +125,7 @@ router.get('/:userId', userController.getUser);
  *      required: false
  *      schema:
  *        $ref: "#/definitions/User"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
@@ -153,7 +153,7 @@ router.patch('/:userId', userController.updateUser);
  *      description: "User id to delete"
  *      required: true
  *      type: "integer"
- *    - name: api_key
+ *    - name: api-key
  *      in: header
  *      required: true
  *      type: string
