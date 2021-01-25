@@ -65,17 +65,3 @@ const hostRatingExample = {
 };
 
 exports.hostRatingExample = hostRatingExample;
-
-//Booking example: (We need to set the initial ID manually)
-const bookingExample = { 
-  booking_id: bigId, 
-  room_id: 7 
-};
-
-// Updates the id to have a different one
-function updateBookingExample(bookingExample){
-	bookingExample.booking_id = bookingExample.booking_id + 1;
-}
-
-exports.bookingExample = bookingExample;
-exports.updateBookingExample = updateBookingExample;

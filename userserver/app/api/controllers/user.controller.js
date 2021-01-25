@@ -4,7 +4,89 @@ const utils = require('../reqResUtils');
 require('dotenv').config();
 const logger = require('../logger');
 
-const userKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate', 'photo'];
+const userCreationKeys = ['firstname', 'lastname', 'email', 'country', 'phonenumber', 'birthdate']
+
+const userKeys = [...userCreationKeys, 'photo'];
+
+function getInvalidIdError(id) {
+  let error = null;
+  if ((typeof id !== 'number') || (id < 0) || (id % 1 !== 0))
+    error = 'Id should be a positive integer';
+
+  return error;
+}
+
+function getInvalidFirstnameError(firstname) {
+  let error = null;
+  if ((typeof firstname !== 'string') || (firstname.length > 30))
+    error = 'firstname should be a string shorter than 30 characters';
+
+  return error;
+}
+
+function getInvalidLastnameError(lastname) {
+  let error = null;
+  if ((typeof lastname !== 'string') || (lastname.length > 30))
+    error = 'lastname should be a string shorter than 30 characters';
+
+  return error;
+}
+
+function getInvalidEmailError(email) {
+  let error = null;
+  if ((typeof email !== 'string') || (email.length > 50) || !(email.includes('@')))
+    error = 'email should be an email-like string shorter than 50 characters';
+
+  return error;
+}
+
+function getInvalidCountryError(country) {
+  let error = null;
+  if ((typeof country !== 'string') || (country.length > 20))
+    error = 'country should be a string shorter than 20 characters';
+
+  return error;
+}
+
+function getInvalidPhonenumberError(phonenumber) {
+  let error = null;
+  if ((typeof phonenumber !== 'string') || (phonenumber.length > 20))
+    error = 'phonenumber should be a string shorter than 20 characters';
+
+  return error;
+}
+
+function getInvalidBirthdateError(birthdate) {
+  let error = null;
+  date = new Date(birthdate)
+  if ((typeof birthdate !== 'string') || isNaN(date))
+    error = 'birthdate should be a date-like string with the format YYYY-MM-DD';
+
+  return error;
+}
+
+function creationPayloadIsInvalid(payload, res) {
+  let error = utils.getAttributeMissingError(payload, [...userCreationKeys, "id"]);
+  
+  if (!error) {
+    error = getInvalidIdError(payload["id"]);
+    error = getInvalidFirstnameError(payload["firstname"]);
+    error = getInvalidLastnameError(payload["lastname"]);
+    error = getInvalidEmailError(payload["email"]);
+    error = getInvalidCountryError(payload["country"]);
+    error = getInvalidPhonenumberError(payload["phonenumber"]);
+    error = getInvalidBirthdateError(payload["birthdate"]);
+  }
+
+  if (error) {
+    logger.error('User could not be created,', error);
+    utils.respond(res, 400, { error: error });
+    return true;
+  }
+  return false;
+}
+
+
 
 exports.createUser = (req, res) => {
 
@@ -15,15 +97,33 @@ exports.createUser = (req, res) => {
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
+  if (creationPayloadIsInvalid(req.body, res))
+    return;
+
   const toCreate = aux.filterObjectKeys(req.body, [...userKeys, "id"]);
-  User.create(toCreate).then((newUser) => {
-    //newUser contains all the attributes of the table, we want to send the client
-    //only the ones in the userKeys list and the 'id'.
-    //also newUser needs to be converted to JSON to be able to be filtered.
-    logger.info('User created');
-    utils.respond(res, 201, aux.filterObjectKeys(newUser.toJSON(), [...userKeys, "id"]));
+
+  User.findOne({ where: { id: req.body["id"] } }).then((user) => {
+    if (user){
+      utils.respond(res, 400, { error: "User with that id already exists" });
+      return;
+    }
+      
+    User.findOne({ where: { email: req.body["email"] } }).then((user) => {
+      if (user) {
+        utils.respond(res, 400, { error: "User with that email already exists" });
+        return;
+      }
+      
+      User.create(toCreate).then((newUser) => {
+          //newUser contains all the attributes of the table, we want to send the client
+          //only the ones in the userKeys list and the 'id'.
+          //also newUser needs to be converted to JSON to be able to be filtered.
+          logger.info('User created');
+          utils.respond(res, 201, aux.filterObjectKeys(newUser.toJSON(), [...userKeys, "id"]));
+      })
+    })
   }).catch((error) => {
-    logger.error('User could not be created')
+    logger.error('User could not be created');
     utils.respond(res, 500, { error: error.message });
   })
 }

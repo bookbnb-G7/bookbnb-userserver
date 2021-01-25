@@ -12,6 +12,47 @@ async function ratingExists(id) {
   return review != null;
 }
 
+function getInvalidRatingError(rating) {
+  let error = null;
+  if ((typeof rating !== 'number') || (rating < 1) || (rating > 5) || (rating % 1 !== 0))
+    error = 'rating should be an integer between 1 and 5';
+
+  return error;
+}
+
+function getInvalidReviewerError(reviewer) {
+  let error = null;
+  if ((typeof reviewer !== 'string') || (reviewer.length > 70))
+    error = 'reviewer should be a string shorter than 70 characters';
+
+  return error;
+}
+
+function getInvalidReviewerIdError(id) {
+  let error = null;
+  if ((typeof id !== 'number') || (id < 0) || (id % 1 !== 0))
+    error = 'reviewer id should be a positive integer';
+
+  return error;
+}
+
+function creationPayloadIsInvalid(payload, res) {
+  let error = utils.getAttributeMissingError(payload, ratingKeys);
+  
+  if (!error) {
+    error = getInvalidRatingError(payload["rating"]);
+    error = getInvalidReviewerError(payload["reviewer"]);
+    error = getInvalidReviewerIdError(payload["reviewer_id"]);
+  }
+
+  if (error) {
+    logger.error('Guest rating could not be created,', error);
+    utils.respond(res, 400, { error: error });
+    return true;
+  }
+  return false;
+}
+
 exports.createRating = async (req, res) => {
 
   logger.info(`POST request to endpoint "/users/${req.params.userId}/guest_ratings"` +
@@ -19,6 +60,9 @@ exports.createRating = async (req, res) => {
   );
 
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
+    return;
+
+  if (creationPayloadIsInvalid(req.body, res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
