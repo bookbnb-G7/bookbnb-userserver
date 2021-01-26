@@ -65,17 +65,42 @@ function getInvalidBirthdateError(birthdate) {
   return error;
 }
 
+function getInvalidPhotoError(photo) {
+  let error = null;
+  if ((typeof photo !== 'string') || (photo.length > 256))
+    error = 'photo should be a string shorter than 256 characters';
+
+  return error;
+}
+
+function getAnyCreationAttributeIsInvalidError(payload) {
+  let error = getInvalidIdError(payload["id"]);
+  if (!error)
+    error = getInvalidFirstnameError(payload["firstname"]);
+
+  if (!error)
+    error = getInvalidLastnameError(payload["lastname"]);
+
+  if (!error)
+    error = getInvalidEmailError(payload["email"]);
+  
+  if (!error)
+    error = getInvalidCountryError(payload["country"]);
+  
+  if (!error)
+    error = getInvalidPhonenumberError(payload["phonenumber"]);
+  
+  if (!error)
+    error = getInvalidBirthdateError(payload["birthdate"]);
+
+  return error;
+}
+
 function creationPayloadIsInvalid(payload, res) {
   let error = utils.getAttributeMissingError(payload, [...userCreationKeys, "id"]);
   
   if (!error) {
-    error = getInvalidIdError(payload["id"]);
-    error = getInvalidFirstnameError(payload["firstname"]);
-    error = getInvalidLastnameError(payload["lastname"]);
-    error = getInvalidEmailError(payload["email"]);
-    error = getInvalidCountryError(payload["country"]);
-    error = getInvalidPhonenumberError(payload["phonenumber"]);
-    error = getInvalidBirthdateError(payload["birthdate"]);
+    error = getAnyCreationAttributeIsInvalidError(payload);
   }
 
   if (error) {
@@ -86,7 +111,41 @@ function creationPayloadIsInvalid(payload, res) {
   return false;
 }
 
+function updatePayloadIsNotValid(payload, res) {
+  let error = null;
+  console.log("updating")
+  console.log(payload)
 
+  if (!error && payload["firstname"])
+    error = getInvalidFirstnameError(payload["firstname"]);
+
+  if (!error && payload["lastname"])
+    error = getInvalidLastnameError(payload["lastname"]);
+  
+  if (!error && payload["email"])
+    error = getInvalidEmailError(payload["email"]);
+  
+  if (!error && payload["country"])
+    error = getInvalidCountryError(payload["country"]);
+
+  if (!error && payload["phonenumber"])
+    error = getInvalidPhonenumberError(payload["phonenumber"]);
+  
+  if (!error && payload["birthdate"])
+    error = getInvalidBirthdateError(payload["birthdate"]);
+  
+  if (!error && payload["photo"])
+    error = getInvalidPhotoError(payload["photo"]);
+
+  console.log(error)
+
+  if (error) {
+    logger.error('User could not be updated,', error);
+    utils.respond(res, 400, { error: error });
+  }
+
+  return error;
+}
 
 exports.createUser = (req, res) => {
 
@@ -172,6 +231,10 @@ exports.updateUser = (req, res) => {
     return;
 
   const toUpdate = aux.filterObjectKeys(req.body, userKeys);
+
+  if (updatePayloadIsNotValid(toUpdate, res))
+    return;
+
   User.findOne({ where: {id: req.params.userId } }).then((user) => {
     if (user) {
       user.update(toUpdate).then((userUpdated) => {

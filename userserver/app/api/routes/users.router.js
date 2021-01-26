@@ -30,6 +30,14 @@ const router = express.Router();
  *        description: User was created successfully
  *        schema:
  *          $ref: "#/definitions/User"
+ *      "400":
+ *        description: Payload is invalid
+ *        schema:
+ *          type: object
+ *          properties:
+ *            error:
+ *              type: string
+ *              example: User with that id already exists
  *      "401":
  *        description: unauthorized, invalid api key
  *      "500":
@@ -133,6 +141,14 @@ router.get('/:userId', userController.getUser);
  *    responses:
  *      "200":
  *        description: User updated
+ *      "400":
+ *        description: Payload is invalid
+ *        schema:
+ *          type: object
+ *          properties:
+ *            error:
+ *              type: string
+ *              example: birthdate should be a date-like string with the format YYYY-MM-DD
  *      "401":
  *        description: unauthorized, invalid api key
  *      "404":

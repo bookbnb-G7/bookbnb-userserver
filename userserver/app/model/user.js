@@ -57,7 +57,7 @@ const User = database.define('users', {
   country: { type: Sequelize.STRING(20), allowNull: false },
   phonenumber: { type: Sequelize.STRING(20), allowNull: false },
   birthdate: { type: Sequelize.DATEONLY, allowNull: false },
-  photo: { type: Sequelize.STRING(255), allowNull: true }
+  photo: { type: Sequelize.STRING(256), allowNull: true }
 })
 
 module.exports = User;
