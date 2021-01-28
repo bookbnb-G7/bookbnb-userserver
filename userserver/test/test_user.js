@@ -55,7 +55,7 @@ describe('Post a user with the email of another that already exists',() => {
 					.set('api-key', api_key)
 					.send(userExample)
 					.end((err, res) => {
-						expect(res).to.have.status(500);
+						expect(res).to.have.status(400);
 						done();
 					})
 			});
@@ -70,7 +70,7 @@ describe('Post an invalid user',() => {
 			.set('api-key', api_key)
 			.send({ firstname: 'nico' })
 			.end((err, res) => {
-				expect(res).to.have.status(500);
+				expect(res).to.have.status(400);
  				done();
 			});
 	});

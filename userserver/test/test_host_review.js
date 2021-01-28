@@ -101,7 +101,7 @@ describe('Post an invalid host review', () => {
           .set('api-key', api_key)
           .send({ reviewer: 'NombreLoco' })
           .end((err, res) => {
-            expect(res).to.have.status(500);
+            expect(res).to.have.status(400);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)

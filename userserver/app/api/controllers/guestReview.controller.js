@@ -12,6 +12,47 @@ async function reviewExists(id) {
   return review != null;
 }
 
+function getInvalidReviewError(review) {
+  let error = null;
+  if ((typeof review !== 'string') || (review.length > 256))
+    error = 'review should be a string shorter than 256 characters';
+
+  return error;
+}
+
+function getInvalidReviewerError(reviewer) {
+  let error = null;
+  if ((typeof reviewer !== 'string') || (reviewer.length > 70))
+    error = 'reviewer should be a string shorter than 70 characters';
+
+  return error;
+}
+
+function getInvalidReviewerIdError(id) {
+  let error = null;
+  if ((typeof id !== 'number') || (id < 0) || (id % 1 !== 0))
+    error = 'reviewer id should be a positive integer';
+
+  return error;
+}
+
+function creationPayloadIsInvalid(payload, res) {
+  let error = utils.getAttributeMissingError(payload, reviewKeys);
+  
+  if (!error) {
+    error = getInvalidReviewError(payload["review"]);
+    error = getInvalidReviewerError(payload["reviewer"]);
+    error = getInvalidReviewerIdError(payload["reviewer_id"]);
+  }
+
+  if (error) {
+    logger.error('Guest review could not be created,', error);
+    utils.respond(res, 400, { error: error });
+    return true;
+  }
+  return false;
+}
+
 exports.createReview = async (req, res) => {
 
   logger.info(`POST request to endpoint "/users/${req.params.userId}/guest_reviews"` +
@@ -19,6 +60,9 @@ exports.createReview = async (req, res) => {
   );
 
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
+    return;
+
+  if (creationPayloadIsInvalid(req.body, res))
     return;
 
   if (!(await UserController.userExists(req.params.userId))) {
@@ -31,7 +75,7 @@ exports.createReview = async (req, res) => {
 
   GuestReview.create(review_params).then((newReview) => {
     logger.info('Guest review created');
-    utils.respond(res, 201, aux.filterObjectKeys(newReview.toJSON(), [...reviewKeys, "id"]));
+    utils.respond(res, 201, newReview.toJSON());
   }).catch((error) => {
     logger.info('Guest review could not be created');
     utils.respond(res, 500, { error: error.message });
@@ -54,7 +98,7 @@ exports.getAllReviews = async (req, res) => {
 
   let query = aux.filterObjectKeys(req.query, [...reviewKeys, "id"]);
   query["userId"] = req.params.userId;
-  GuestReview.findAll({ where: query, attributes: [...reviewKeys, "id"] }).then((reviews) => {
+  GuestReview.findAll({ where: query }).then((reviews) => {
     utils.respond(res, 200, { userId: req.params.userId, amount: reviews.length, reviews: reviews });
   }).catch((error) => {
     utils.respond(res, 500, { error: error.message });
@@ -77,7 +121,7 @@ exports.getReview = async (req, res) => {
     return;
   }
 
-  GuestReview.findOne({ where:{ id:[req.params.reviewId], userId: [req.params.userId] }, attributes: [...reviewKeys, "id"]}).then((review) => {
+  GuestReview.findOne({ where:{ id:[req.params.reviewId], userId: [req.params.userId] } }).then((review) => {
     if (review != null)
       utils.respond(res, 200, review);
     else
@@ -110,7 +154,7 @@ exports.updateReview = async (req, res) => {
     if (review) {
       review.update(toUpdate).then((reviewUpdated) => {
         logger.info('Guest review updated');
-        utils.respond(res, 200, aux.filterObjectKeys(reviewUpdated.toJSON(), [...reviewKeys, "id"]));
+        utils.respond(res, 200, reviewUpdated.toJSON());
       }).catch((error) => {
         logger.info('Guest review could not be updated');
         utils.respond(res, 500, { error: error.message});

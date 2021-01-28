@@ -27,8 +27,8 @@ const User = require('./user')
 
 const GuestReview = database.define('guest_reviews', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement:true },
-  review: { type: Sequelize.STRING(50), allowNull: false },
-  reviewer: { type: Sequelize.STRING(50), allowNull: false },
+  review: { type: Sequelize.STRING(256), allowNull: false },
+  reviewer: { type: Sequelize.STRING(70), allowNull: false },
   reviewer_id: { type: Sequelize.INTEGER, allowNull: false },
 })
 

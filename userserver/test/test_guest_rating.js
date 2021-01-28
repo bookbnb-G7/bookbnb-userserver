@@ -101,7 +101,7 @@ describe('Post an invalid guest rating', () => {
           .set('api-key', api_key)
           .send({ rating: 'a', reviewer: 'NombreLoco', reviewer_id: '5' })
           .end((err, res) => {
-            expect(res).to.have.status(500);
+            expect(res).to.have.status(400);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
@@ -133,7 +133,7 @@ describe('Post a guest rating without enough arguments', () => {
           .set('api-key', api_key)
           .send({ reviewer: 'NombreLoco', reviewer_id: '5' })
           .end((err, res) => {
-            expect(res).to.have.status(500);
+            expect(res).to.have.status(400);
             //Delete the user
             chai.request(url)
               .delete('/users/' + userID)
