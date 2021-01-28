@@ -178,7 +178,7 @@ exports.createUser = (req, res) => {
           //only the ones in the userKeys list and the 'id'.
           //also newUser needs to be converted to JSON to be able to be filtered.
           logger.info('User created');
-          utils.respond(res, 201, aux.filterObjectKeys(newUser.toJSON(), [...userKeys, "id"]));
+          utils.respond(res, 201, newUser.toJSON());
       })
     })
   }).catch((error) => {
@@ -194,7 +194,7 @@ exports.getUser = (req, res) => {
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
 
-  User.findOne({ where: { id: req.params.userId }, attributes: [...userKeys, "id"]}).then((user) => {
+  User.findOne({ where: { id: req.params.userId } }).then((user) => {
     if (user)
       utils.respond(res, 200, user);
     else
@@ -214,7 +214,7 @@ exports.getAllUsers = (req, res) => {
     return;
 
   let query = aux.filterObjectKeys(req.query, [...userKeys, "id"]);
-  User.findAll({ where: query, attributes: [...userKeys, "id"] }).then((users) => {
+  User.findAll({ where: query }).then((users) => {
     utils.respond(res, 200, { amount: users.length, users: users });
   }).catch((error) => {
     utils.respond(res, 500, { error: error.message });
@@ -239,7 +239,7 @@ exports.updateUser = (req, res) => {
     if (user) {
       user.update(toUpdate).then((userUpdated) => {
         logger.info('User updated');
-        utils.respond(res, 200, aux.filterObjectKeys(userUpdated.toJSON(), [...userKeys, "id"]));
+        utils.respond(res, 200, userUpdated.toJSON());
       }).catch((error) => {
         utils.respond(res, 500, { error: error.message });
       });

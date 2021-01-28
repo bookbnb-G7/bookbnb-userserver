@@ -75,7 +75,7 @@ exports.createReview = async (req, res) => {
 
   GuestReview.create(review_params).then((newReview) => {
     logger.info('Guest review created');
-    utils.respond(res, 201, aux.filterObjectKeys(newReview.toJSON(), [...reviewKeys, "id"]));
+    utils.respond(res, 201, newReview.toJSON());
   }).catch((error) => {
     logger.info('Guest review could not be created');
     utils.respond(res, 500, { error: error.message });
@@ -98,7 +98,7 @@ exports.getAllReviews = async (req, res) => {
 
   let query = aux.filterObjectKeys(req.query, [...reviewKeys, "id"]);
   query["userId"] = req.params.userId;
-  GuestReview.findAll({ where: query, attributes: [...reviewKeys, "id"] }).then((reviews) => {
+  GuestReview.findAll({ where: query }).then((reviews) => {
     utils.respond(res, 200, { userId: req.params.userId, amount: reviews.length, reviews: reviews });
   }).catch((error) => {
     utils.respond(res, 500, { error: error.message });
@@ -121,7 +121,7 @@ exports.getReview = async (req, res) => {
     return;
   }
 
-  GuestReview.findOne({ where:{ id:[req.params.reviewId], userId: [req.params.userId] }, attributes: [...reviewKeys, "id"]}).then((review) => {
+  GuestReview.findOne({ where:{ id:[req.params.reviewId], userId: [req.params.userId] } }).then((review) => {
     if (review != null)
       utils.respond(res, 200, review);
     else
@@ -154,7 +154,7 @@ exports.updateReview = async (req, res) => {
     if (review) {
       review.update(toUpdate).then((reviewUpdated) => {
         logger.info('Guest review updated');
-        utils.respond(res, 200, aux.filterObjectKeys(reviewUpdated.toJSON(), [...reviewKeys, "id"]));
+        utils.respond(res, 200, reviewUpdated.toJSON());
       }).catch((error) => {
         logger.info('Guest review could not be updated');
         utils.respond(res, 500, { error: error.message});

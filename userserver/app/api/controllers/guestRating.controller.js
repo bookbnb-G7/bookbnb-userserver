@@ -75,7 +75,7 @@ exports.createRating = async (req, res) => {
 
   GuestRating.create(rating_params).then((newRating) => {
     logger.info('Guest rating created');
-    utils.respond(res, 201, aux.filterObjectKeys(newRating.toJSON(), [...ratingKeys, "id"]));
+    utils.respond(res, 201, newRating.toJSON());
   }).catch((error) => {
     logger.info('Guest rating could not be created');
     utils.respond(res, 500, { error: error.message, params: req.params });
@@ -98,7 +98,7 @@ exports.getAllRatings = async (req, res) => {
 
   let query = aux.filterObjectKeys(req.query, [...ratingKeys, "id"]);
   query["userId"] = req.params.userId;
-  GuestRating.findAll({ where: query, attributes: [...ratingKeys, "id"] }).then((ratings) => {
+  GuestRating.findAll({ where: query }).then((ratings) => {
     utils.respond(res, 200, { userId: req.params.userId, amount: ratings.length, ratings: ratings });
   }).catch((error) => {
     utils.respond(res, 500, { error: error.message });
@@ -121,7 +121,7 @@ exports.getRating = async (req, res) => {
     return;
   }
 
-  GuestRating.findOne({ where:{ id:[req.params.ratingId], userId: [req.params.userId] }, attributes: [...ratingKeys, "id"]}).then((rating) => {
+  GuestRating.findOne({ where:{ id:[req.params.ratingId], userId: [req.params.userId] } }).then((rating) => {
     if (rating != null)
       utils.respond(res, 200, rating);
     else
@@ -154,7 +154,7 @@ exports.updateRating = async (req, res) => {
     if (rating) {
       rating.update(toUpdate).then((ratingUpdated) => {
         logger.info('Guest rating updated');
-        utils.respond(res, 200, aux.filterObjectKeys(ratingUpdated.toJSON(), [...ratingKeys, "id"]));
+        utils.respond(res, 200, ratingUpdated.toJSON());
       }).catch((error) => {
         logger.info('Guest rating could not be updated');
         utils.respond(res, 500, { error: error.message});
