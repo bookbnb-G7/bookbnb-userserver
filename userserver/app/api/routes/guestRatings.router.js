@@ -24,7 +24,7 @@ const router = express.Router();
  *      in: body
  *      required: true
  *      schema:
- *        $ref: '#/definitions/GuestRating'
+ *        $ref: '#/definitions/GuestRatingPayload'
  *    - name: api-key
  *      in: header
  *      required: true

@@ -5,7 +5,7 @@ const User = require('./user')
 /**
  * @swagger
  * definitions:
- *  HostRating:
+ *  HostRatingPayload:
  *    type: object
  *    properties:
  *      rating:
@@ -25,6 +25,27 @@ const User = require('./user')
  *        required: true
  *        description: "Id of the user who made the rating"
  *        example: 22
+ *  HostRating:
+ *    allOf:
+ *      - $ref: "#/definitions/HostRatingPayload"
+ *      - type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *            required: true
+ *            example: 1
+ *          userId:
+ *            type: integer
+ *            required: true
+ *            example: 1
+ *          createdAt:
+ *            type: string
+ *            format: datetime
+ *            example: "2020-11-10T22:51:03.539Z"
+ *          updatedAt:
+ *            type: string
+ *            format: datetime
+ *            example: "2020-11-10T22:51:03.539Z"
  */
 
 const HostRating = database.define('host_ratings', {

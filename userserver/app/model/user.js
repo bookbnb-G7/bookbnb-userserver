@@ -4,7 +4,7 @@ const Sequelize = require('sequelize')
 /**
  * @swagger
  * definitions:
- *  User:
+ *  UserPayload:
  *    type: object
  *    properties:
  *      id:
@@ -44,6 +44,20 @@ const Sequelize = require('sequelize')
  *        format: url
  *        required: false
  *        example: "https://www.cmtv.com.ar/imagenes_artistas/70.jpg?Chayanne"
+ *  User:
+ *    allOf:
+ *      - $ref: "#/definitions/UserPayload"
+ *      - type: object
+ *        properties:
+ *          createdAt:
+ *            type: string
+ *            format: datetime
+ *            example: "2020-11-10T22:51:03.539Z"
+ *          updatedAt:
+ *            type: string
+ *            format: datetime
+ *            example: "2020-11-10T22:51:03.539Z"
+ *    
  */
 
 const User = database.define('users', {

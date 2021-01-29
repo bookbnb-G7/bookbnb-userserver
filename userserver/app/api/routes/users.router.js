@@ -19,7 +19,7 @@ const router = express.Router();
  *      in: body
  *      required: true
  *      schema:
- *        $ref: '#/definitions/User'
+ *        $ref: '#/definitions/UserPayload'
  *    - name: api-key
  *      in: header
  *      required: true
