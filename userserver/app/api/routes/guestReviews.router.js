@@ -24,7 +24,7 @@ const router = express.Router();
  *      in: body
  *      required: true
  *      schema:
- *        $ref: '#/definitions/GuestReview'
+ *        $ref: '#/definitions/GuestReviewPayload'
  *    - name: api-key
  *      in: header
  *      required: true
@@ -126,45 +126,6 @@ router.get('/:userId/guest_reviews', guestReviewController.getAllReviews);
  *        description: User or review not found
  */
 router.get('/:userId/guest_reviews/:reviewId', guestReviewController.getReview);
-
-/**
- * @swagger
- * /users/{userId}/guest_reviews/{reviewId}:
- *  patch:
- *    tags:
- *    - Guest Reviews
- *    summary: Updates a review
- *    description: Changes the attributes received of a specific review of a specific user
- *    parameters:
- *    - name: "userId"
- *      in: path
- *      description: "The ID of a specific user" 
- *      required: true
- *      type: "integer"
- *    - name: "reviewId"
- *      in: "path"
- *      description: "Review id to be updated"
- *      required: true
- *      type: "integer"
- *    - name: JsonPatch
- *      in: body
- *      required: false
- *      schema:
- *        $ref: "#/definitions/GuestReview"
- *    - name: api-key
- *      in: header
- *      required: true
- *      type: string
- *      example: fake_api_key
- *    responses:
- *      "200":
- *        description: Review updated
- *      "401":
- *        description: unauthorized, invalid api key
- *      "404":
- *        description: User or review not found
- */
-router.patch('/:userId/guest_reviews/:reviewId', guestReviewController.updateReview);
 
 /**
  * @swagger

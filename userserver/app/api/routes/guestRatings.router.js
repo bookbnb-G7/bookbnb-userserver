@@ -24,7 +24,7 @@ const router = express.Router();
  *      in: body
  *      required: true
  *      schema:
- *        $ref: '#/definitions/GuestRating'
+ *        $ref: '#/definitions/GuestRatingPayload'
  *    - name: api-key
  *      in: header
  *      required: true
@@ -126,45 +126,6 @@ router.get('/:userId/guest_ratings', guestRatingController.getAllRatings);
  *        description: User or rating not found
  */
 router.get('/:userId/guest_ratings/:ratingId', guestRatingController.getRating);
-
-/**
- * @swagger
- * /users/{userId}/guest_ratings/{ratingId}:
- *  patch:
- *    tags:
- *    - Guest Ratings
- *    summary: Updates a rating
- *    description: Changes the attributes received of a specific rating of a specific user
- *    parameters:
- *    - name: "userId"
- *      in: path
- *      description: "The ID of a specific user" 
- *      required: true
- *      type: "integer"
- *    - name: "ratingId"
- *      in: "path"
- *      description: "Rating id to be updated"
- *      required: true
- *      type: "integer"
- *    - name: JsonPatch
- *      in: body
- *      required: false
- *      schema:
- *        $ref: "#/definitions/GuestRating"
- *    - name: api-key
- *      in: header
- *      required: true
- *      type: string
- *      example: fake_api_key
- *    responses:
- *      "200":
- *        description: Rating updated
- *      "401":
- *        description: unauthorized, invalid api key
- *      "404":
- *        description: User or rating not found
- */
-router.patch('/:userId/guest_ratings/:ratingId', guestRatingController.updateRating);
 
 /**
  * @swagger
