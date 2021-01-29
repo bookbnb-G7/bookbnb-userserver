@@ -131,41 +131,6 @@ exports.getRating = async (req, res) => {
   })
 }
 
-exports.updateRating = async (req, res) => {
-
-  logger.info(`PATCH request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"` +
-    `\tRequest body: ${JSON.stringify(req.body)}`
-  );
-
-  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
-    return;
-
-  if (!(await UserController.userExists(req.params.userId))) {
-    utils.respond(res, 404, { error: "user not found" });
-    return;
-  }
-  if (!(await ratingExists(req.params.ratingId))) {
-    utils.respond(res, 404, { error: "rating not found" });
-    return;
-  }
-
-  const toUpdate = aux.filterObjectKeys(req.body, ratingKeys);
-  HostRating.findOne({ where: { id: req.params.ratingId, userId: req.params.userId } }).then((rating) => {
-    if (rating) {
-      rating.update(toUpdate).then((ratingUpdated) => {
-        logger.info('Host rating updated');
-        utils.respond(res, 200, ratingUpdated.toJSON());
-      }).catch((error) => {
-        logger.info('Host rating could not be updated');
-        utils.respond(res, 500, { error: error.message});
-      });
-    } else
-      utils.respond(res, 404, { error: "no relation between user and host rating" });
-  }).catch((error) => {
-    utils.respond(res, 500, { error: error.message });
-  });
-}
-
 exports.deleteRating = async (req, res) => {
 
   logger.info(`DELETE request to endpoint "/users/${req.params.userId}/host_ratings/${req.params.ratingId}"`);

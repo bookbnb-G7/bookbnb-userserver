@@ -131,41 +131,6 @@ exports.getReview = async (req, res) => {
   })
 }
 
-exports.updateReview = async (req, res) => {
-
-  logger.info(`PATCH request to endpoint "/users/${req.params.userId}/guest_reviews/${req.params.reviewId}"` +
-    `\tRequest body: ${JSON.stringify(req.body)}`
-  );
-
-  if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
-    return;
-
-  if (!(await UserController.userExists(req.params.userId))) {
-    utils.respond(res, 404, { error: "user not found" });
-    return;
-  }
-  if (!(await reviewExists(req.params.reviewId))) {
-    utils.respond(res, 404, { error: "review not found" });
-    return;
-  }
-
-  const toUpdate = aux.filterObjectKeys(req.body, reviewKeys);
-  GuestReview.findOne({ where: { id: req.params.reviewId, userId: req.params.userId } }).then((review) => {
-    if (review) {
-      review.update(toUpdate).then((reviewUpdated) => {
-        logger.info('Guest review updated');
-        utils.respond(res, 200, reviewUpdated.toJSON());
-      }).catch((error) => {
-        logger.info('Guest review could not be updated');
-        utils.respond(res, 500, { error: error.message});
-      });
-    } else
-      utils.respond(res, 404, { error: "no relation between user and guest review" });
-  }).catch((error) => {
-    utils.respond(res, 500, { error: error.message });
-  });
-}
-
 exports.deleteReview = async (req, res) => {
 
   logger.info(`DELETE request to endpoint "/users/${req.params.userId}/guest_reviews/${req.params.reviewId}"`);
