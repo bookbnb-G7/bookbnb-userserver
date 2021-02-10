@@ -12,38 +12,10 @@ async function ratingExists(id) {
   return review != null;
 }
 
-function getInvalidRatingError(rating) {
-  let error = null;
-  if ((typeof rating !== 'number') || (rating < 1) || (rating > 5) || (rating % 1 !== 0))
-    error = 'rating should be an integer between 1 and 5';
-
-  return error;
-}
-
-function getInvalidReviewerError(reviewer) {
-  let error = null;
-  if ((typeof reviewer !== 'string') || (reviewer.length > 70))
-    error = 'reviewer should be a string shorter than 70 characters';
-
-  return error;
-}
-
-function getInvalidReviewerIdError(id) {
-  let error = null;
-  if ((typeof id !== 'number') || (id < 0) || (id % 1 !== 0))
-    error = 'reviewer id should be a positive integer';
-
-  return error;
-}
-
 function creationPayloadIsInvalid(payload, res) {
-  let error = utils.getAttributeMissingError(payload, ratingKeys);
-  
-  if (!error) {
-    error = getInvalidRatingError(payload["rating"]);
-    error = getInvalidReviewerError(payload["reviewer"]);
-    error = getInvalidReviewerIdError(payload["reviewer_id"]);
-  }
+  let error = utils.getErrorInPayload(payload, { "rating": { "type": "number", "min": 1, "max": 5, "isInteger": true },
+                                                 "reviewer": { "type": "string", "length": 70 },
+                                                 "reviewer_id": { "type": "number", "min": 0, "isInteger": true }, });
 
   if (error) {
     logger.error('Guest rating could not be created,', error);

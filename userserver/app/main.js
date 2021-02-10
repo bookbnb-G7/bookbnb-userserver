@@ -41,6 +41,7 @@ app.use('/users', require('./api/routes/hostReviews.router'));
 app.use('/users', require('./api/routes/hostRatings.router'));
 app.use('/users', require('./api/routes/guestReviews.router'));
 app.use('/users', require('./api/routes/guestRatings.router'));
+app.use('/users', require('./api/routes/favoriteRooms.router'));
 
 database.sync().then(() => {
  	app.listen(port, () => {
