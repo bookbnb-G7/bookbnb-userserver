@@ -41,7 +41,7 @@ exports.guestReviewExample = guestReviewExample;
 
 //Guest rating example:
 const guestRatingExample = { 
-  rating: '5', 
+  rating: 5, 
   reviewer: 'Facu T', 
   reviewer_id: 2 
 };
@@ -59,9 +59,16 @@ exports.hostReviewExample = hostReviewExample;
 
 //Host rating example:
 const hostRatingExample = { 
-  rating: '5', 
+  rating: 5, 
   reviewer: 'Facu T', 
   reviewer_id: 2
 };
 
 exports.hostRatingExample = hostRatingExample;
+
+//Favorite room example:
+const favoriteRoomExample = { 
+  room_id: 5
+};
+
+exports.favoriteRoomExample = favoriteRoomExample;

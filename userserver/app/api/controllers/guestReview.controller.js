@@ -12,38 +12,10 @@ async function reviewExists(id) {
   return review != null;
 }
 
-function getInvalidReviewError(review) {
-  let error = null;
-  if ((typeof review !== 'string') || (review.length > 256))
-    error = 'review should be a string shorter than 256 characters';
-
-  return error;
-}
-
-function getInvalidReviewerError(reviewer) {
-  let error = null;
-  if ((typeof reviewer !== 'string') || (reviewer.length > 70))
-    error = 'reviewer should be a string shorter than 70 characters';
-
-  return error;
-}
-
-function getInvalidReviewerIdError(id) {
-  let error = null;
-  if ((typeof id !== 'number') || (id < 0) || (id % 1 !== 0))
-    error = 'reviewer id should be a positive integer';
-
-  return error;
-}
-
 function creationPayloadIsInvalid(payload, res) {
-  let error = utils.getAttributeMissingError(payload, reviewKeys);
-  
-  if (!error) {
-    error = getInvalidReviewError(payload["review"]);
-    error = getInvalidReviewerError(payload["reviewer"]);
-    error = getInvalidReviewerIdError(payload["reviewer_id"]);
-  }
+  let error = utils.getErrorInPayload(payload, { "review": { "type": "string", "length": 256 },
+                                                 "reviewer": { "type": "string", "length": 70 },
+                                                 "reviewer_id": { "type": "number", "min": 0, "isInteger": true }, });
 
   if (error) {
     logger.error('Guest review could not be created,', error);
