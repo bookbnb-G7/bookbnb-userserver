@@ -7,8 +7,8 @@ const logger = require('../logger');
 
 const favoriteKeys = ['room_id'];
 
-async function favoriteExists(id) {
-  let favorite = await FavoriteRoom.findOne({ where: { id } });
+async function favoriteExists(userId, roomId) {
+  let favorite = await FavoriteRoom.findOne({ where: { userId: userId, room_id: roomId } });
   return favorite != null;
 }
 
@@ -37,6 +37,11 @@ exports.createFavorite = async (req, res) => {
 
   if (!(await UserController.userExists(req.params.userId))) {
     utils.respond(res, 404, { error: "user not found" });
+    return;
+  }
+
+  if ((await favoriteExists(req.params.userId, req.body.room_id))) {
+    utils.respond(res, 400, { error: "favorite already exists" });
     return;
   }
   
@@ -77,7 +82,7 @@ exports.getAllFavorites = async (req, res) => {
 
 exports.getFavorite = async (req, res) => {
 
-  logger.info(`GET request to endpoint "/users/${req.params.userId}/favorite_rooms/${req.params.favoriteId}"`);
+  logger.info(`GET request to endpoint "/users/${req.params.userId}/favorite_rooms/${req.params.roomId}"`);
 
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
@@ -86,12 +91,12 @@ exports.getFavorite = async (req, res) => {
     utils.respond(res, 404, { error: "user not found" });
     return;
   }
-  if (!(await favoriteExists(req.params.favoriteId))) {
+  if (!(await favoriteExists(req.params.userId, req.params.roomId))) {
     utils.respond(res, 404, { error: "favorite room not found" });
     return;
   }
 
-  FavoriteRoom.findOne({ where:{ id:[req.params.favoriteId], userId: [req.params.userId] } }).then((favorite) => {
+  FavoriteRoom.findOne({ where:{ room_id: req.params.roomId, userId: req.params.userId } }).then((favorite) => {
     if (favorite != null)
       utils.respond(res, 200, favorite);
     else
@@ -103,7 +108,7 @@ exports.getFavorite = async (req, res) => {
 
 exports.deleteFavorite = async (req, res) => {
 
-  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/favorite_rooms/${req.params.favoriteId}"`);
+  logger.info(`DELETE request to endpoint "/users/${req.params.userId}/favorite_rooms/${req.params.roomId}"`);
 
   if (utils.apiKeyIsNotValid(req.headers['api-key'], res))
     return;
@@ -112,12 +117,12 @@ exports.deleteFavorite = async (req, res) => {
     utils.respond(res, 404, { error: "user not found" });
     return;
   }
-  if (!(await favoriteExists(req.params.favoriteId))) {
+  if (!(await favoriteExists(req.params.userId, req.params.roomId))) {
     utils.respond(res, 404, { error: "favorite not found" });
     return;
   }
 
-  FavoriteRoom.destroy({ where: { id: req.params.favoriteId, userId: req.params.userId } })
+  FavoriteRoom.destroy({ where: { room_id: req.params.roomId, userId: req.params.userId } })
     .then((result) => {
       if (result)
         utils.respond(res, 200, result);

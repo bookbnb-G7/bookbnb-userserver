@@ -44,6 +44,49 @@ describe('Post a new favorite room', () => {
   })
 })
 
+//Post
+describe('Post an existing favorite room', () => {
+  it('should fail to create a favorite room because it already exists', (done) => {
+    updateUserExample(userExample)
+    //Create a new User for the test
+    chai.request(url)
+      .post('/users')
+      .set('api-key', api_key)
+      .send(userExample)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        let userID = res.body.id;
+        //Post a new favorite room:
+        chai.request(url)
+          .post('/users/' + userID + '/favorite_rooms')
+          .set('api-key', api_key)
+          .send(favoriteRoomExample)
+          .end((err, res) => {
+            expect(res).to.have.status(201);
+            expect(res.body).to.have.property('room_id');
+            expect(res.body).to.have.property('id');
+            //Post the same favorite room (what we want to test)
+            chai.request(url)
+              .post('/users/' + userID + '/favorite_rooms')
+              .set('api-key', api_key)
+              .send(favoriteRoomExample)
+              .end((err, res) => {
+                expect(res).to.have.status(400);
+                //Delete the user
+                chai.request(url)
+                  .delete('/users/' + userID)
+                  .set('api-key', api_key)
+                  .send()
+                  .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                  })
+              })
+          })
+      }) 
+  })
+})
+
 describe('Post a favorite room to a user that doesnt exist', () => {
   it('should return a "user not found" error', (done) => {
     chai.request(url)
@@ -133,7 +176,7 @@ describe('Get all the favorite rooms of a user', () => {
           .send(favoriteRoomExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
-            favoriteID = res.body.id;
+            favoriteID = res.body.room_id;
             //Get all the favorite rooms of the user (what we want to test)
             chai.request(url)
               .get('/users/' + userID + '/favorite_rooms')
@@ -227,7 +270,7 @@ describe('Get a specific favorite room by ID', () => {
           .send(favoriteRoomExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
-            favoriteID = res.body.id;
+            favoriteID = res.body.room_id;
             //Get the favorite room of the user (what we want to test)
             chai.request(url)
               .get('/users/' + userID + '/favorite_rooms/' + favoriteID)
@@ -316,7 +359,7 @@ describe('Delete a favorite room', () => {
           .send(favoriteRoomExample)
           .end((err, res) => {
             expect(res).to.have.status(201);
-            favoriteID = res.body.id;
+            favoriteID = res.body.room_id;
             //Delete the favorite room (what we want to test)
               chai.request(url)
                 .delete('/users/' + userID + '/favorite_rooms/' + favoriteID)
