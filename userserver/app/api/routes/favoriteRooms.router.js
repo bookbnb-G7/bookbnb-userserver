@@ -125,7 +125,7 @@ router.get('/:userId/favorite_rooms', favoriteRoomController.getAllFavorites);
  *      "404":
  *        description: User or favorite not found
  */
-router.get('/:userId/favorite_rooms/:favoriteId', favoriteRoomController.getFavorite);
+router.get('/:userId/favorite_rooms/:roomId', favoriteRoomController.getFavorite);
 
 /**
  * @swagger
@@ -158,6 +158,6 @@ router.get('/:userId/favorite_rooms/:favoriteId', favoriteRoomController.getFavo
  *      "404":
  *        description: User or favorite room not found
  */
-router.delete('/:userId/favorite_rooms/:favoriteId', favoriteRoomController.deleteFavorite);
+router.delete('/:userId/favorite_rooms/:roomId', favoriteRoomController.deleteFavorite);
 
 module.exports = router;
