@@ -18,18 +18,35 @@ const swaggerOptions = {
     },
     servers: ["http://localhost:8080"]
   },
-  apis: ["./userserver/app/api/routes/*.js", "./userserver/app/model/*.js"]
+  apis: ["./userserver/app/main.js", "./userserver/app/api/routes/*.js", "./userserver/app/model/*.js"]
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
+/**
+ * @swagger
+ * /ping:
+ *  get:
+ *    tags:
+ *    - Default
+ *    produces:
+ *    - "application/json"
+ *    responses:
+ *      "200":
+ *        schema:
+ *          type: object
+ *          properties:
+ *            message:
+ *              type: string
+ *              example: userserver
+ */
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    logger.info('GET request to endpoint "/"\n' +
+app.get('/ping', (req, res) => {
+    logger.info('GET request to endpoint "/ping"\n' +
               '\tResponse status: 200\n' +
               `\tResponse body: {message:'userserver'}`
     );
