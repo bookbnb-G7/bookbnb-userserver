@@ -14,8 +14,7 @@ if (ENVIRONMENT == 'production') {
 		dialect: 'postgres',
 		operatorsAliases: Sequelize.Op,
 	  define: {timestamp: false},
-		native:true,
-		ssl:true,
+		ssl: true,
 		dialectOptions: {ssl: true}
   })
 } 
